@@ -1,0 +1,108 @@
+- Alterar o Embed menu login core para um shortcode elm_login_menu, para depois ter um failsafe caso o core login não exista...
+- Usar o embed menu para o que há de novo sacado do core menu, testar com a definição da template $login_menu_logged para ver se funciona. Em último caso ir ao html e sacá-lo á má fila (como está no embedmenu).
+Quando funcionar, também arranjar um shortcode para o chamar para ter um failsafe....~
+- Failsafe também nos links do menu de utilizador, depois de logado....
+- Renomear tudo o que seja $elm_menu para $eam_menu (euser_all_menu)
+
+- JUNTAR OS SEGUINTES MENUS???:
+ ONLINE_MENU, ONLINE_EXTENDED_MENU, TREE_MENU, COUNTER_MENU, AONLINE_MENU
+
+- O PLUGIN DEPOIS TAMBÉM TEM DE LEVAR CÁ DENTRO COM O MEMBER LIST NOVO...
+- Verificar se os prefs são todos mesmo precisos
+- Juntar os dois menus de login num só, e criar uma opção no admin para controlar o que aparece...
+- Templatizar isto tudo, refazendo menus e companhia...
+	- Fazer templates
+	- Fazer shortcodes
+- Criar menu para os utilizadores (não gosto da forma como está...)
+	- Fazer um menu para as opções do perfil
+- Juntar código duplicado, especialmente no newusersettings e userhandler....
+- Colocar as mesmas opções no menu de login que estão no login_menu do core (e eventualmente, utilizar o código do core também...) PARCIALMENTE FEITO, FALTA UPDATE OS SHORTCODES
+- Fazer os languages na V2.0 do e107
+- Agrupar os icones só num ficheiro, e alterá-los todos para um mesmo estilo
+- Verificar a integração com o menu de icones do login_mini_menu (onlineinfo_menu), principalmente memberlist e amigos...
+- Transformar na tabela dos amigos aquilo separado por | em commas (CSV). Não, vai passar para uma tabela nova….
+
+
+- Criar um plugin para limpar a pasta de plugins de plugins não instalados / usados....
+
+
+- Ficheiros no plugin ONLINEINFO_MENU original, usados ou não...
+
+06-07-2010  09:51             1.406 addamigo.php			Excluído...
+06-07-2010  09:51             4.983 admin_config.php			Mantido, mistura dos dois plugins...
+06-07-2010  09:51             4.462 admin_config_coppermine.php		Renomeado para admin_lm_config_coppermine.php
+06-07-2010  09:51             8.651 admin_config_extra.php		Renomeado para admin_lm_config_extra.php
+06-07-2010  09:51             4.386 admin_config_flashchat.php		Renomeado para admin_lm_config_flashchat.php
+06-07-2010  09:51             4.302 admin_config_gallery2.php		Renomeado para admin_lm_config_gallery2.php
+06-07-2010  09:51             4.036 admin_config_IPB.php		Renomeado para admin_lm_config_IPB.php
+06-07-2010  09:51            23.146 admin_config_late.php		Renomeado para admin_lm_config_late.php
+06-07-2010  09:51             4.688 admin_config_order.php		Renomeado para admin_lm_config_order.php
+06-07-2010  09:51             4.047 admin_config_smf.php		Renomeado para admin_lm_config_smf.php
+06-07-2010  09:51            10.487 admin_config_usercols.php		Renomeado para admin_lm_config_usercols.php
+06-07-2010  09:51             6.009 admin_config_who.php		Renomeado para admin_lm_config_who.php
+### Talvez no futuro estes admins_configs se juntem num só ficheiro....
+
+
+06-07-2010  09:51             3.538 admin_menu.php			Provavelmente passou para dentro do admin_config.php
+
+06-07-2010  09:51             5.088 admin_suspend.php			Renomeado para admin_lm_suspend.php
+06-07-2010  09:51             7.706 admin_vupdate.php			Renomeado para admin_lm_vupdate.php
+06-07-2010  09:51             8.077 amigo.php				Excluído...
+23-03-2011  13:18             3.521 avatar.php				Renomeado para euser_lm_avatar.php
+06-07-2010  09:51            13.069 birthday.php			Renomeado para euser_lm_birthday.php
+06-07-2010  09:51             1.250 coppermine.php			Renomeado para euser_lm_coppermine.php
+06-07-2010  09:51             6.051 counter.php				Renomeado para euser_lm_counter.php
+26-07-2011  10:41            40.693 currentlyonline.php			Renomeado para euser_lm_currentlyonline.php
+03-08-2016  11:44                 0 dir.txt
+06-07-2010  09:51             1.111 extrainfo.php			Renomeado para euser_lm_extrainfo.php
+06-07-2010  09:51               980 e_meta.php				Excluido....
+06-07-2010  09:51               148 e_update.php			MAntido.... A ALTERAR!!!!
+06-07-2010  09:51             4.923 fc.php				Renomeado para euser_lm_fc.php
+06-07-2010  09:51             1.063 flashchat.php			Renomeado para euser_lm_flashchat.php
+06-07-2010  09:51            42.728 functions.php			EXCLUIDO....
+06-07-2010  09:51             1.153 gallery2.php			Renomeado para euser_lm_gallery2.php
+06-07-2010  09:51            23.531 help.php				Renomeado para euser_lm_help.php
+06-07-2010  09:51                 0 index.html
+06-07-2010  09:51               141 index.php
+06-07-2010  09:51             1.886 lastvisitors.php			Renomeado para euser_lm_lastvisitors.php
+06-07-2010  09:51             4.862 login_menu_shortcodes.php		Excluido. Conteúdo passou para o euser_shortcodes.php
+06-07-2010  09:51             1.757 login_menu_template.php		Mantido, mudou para a pasta templates
+06-07-2010  09:51            31.978 message.wav				EXCLUIDO....
+06-07-2010  09:51            91.419 new.php				Renomeado para euser_new.php
+06-07-2010  09:51               405 oim_poster.sc			Renomeado para euser_lm_poster.sc
+06-07-2010  09:51               107 oim_user_name.sc			Renomeado para euser_lm_user_name.sc
+###### Candidatos a saltarem daqui para o ficheiro shortcode normal....
+
+06-07-2010  09:51             2.842 online.js				Mantido, mudou para a pasta js
+06-07-2010  09:51             9.331 onlineinfo_menu.php			Renomeado para euser_login_menu.php
+06-07-2010  09:51             1.137 picker.html				????
+06-07-2010  09:51             5.401 picker.js				????
+23-03-2011  13:20            20.685 plugin.php				Excluido...
+23-07-2016  18:19             8.944 pm.php				Renomeado para euser_lm_pm.php
+06-07-2010  09:51            12.014 readme.txt				Excluido...
+06-07-2010  09:51             1.213 regusers.php				Passou para dentro do euser_lm_updated.php
+06-07-2010  09:51             1.706 smf.php				Renomeado para euser_lm_smf.php
+06-07-2010  09:51            11.428 switchcontent.js			Mantido, mudou para a pasta js
+06-07-2010  09:51             2.133 tmembers.php			Renomeado para euser_lm_tmembers.php
+06-07-2010  09:51             4.174 toppost.php				Renomeado para euser_lm_toppost.php
+06-07-2010  09:51             4.437 toppostreplier.php			Renomeado para euser_lm_toppostreplier.php
+06-07-2010  09:51             4.468 toppoststarter.php			Renomeado para euser_lm_toppoststarter.php
+06-07-2010  09:51             4.053 topratedmember.php			Renomeado para euser_lm_topratedmember.php
+06-07-2010  09:51             4.162 topvisits.php			Renomeado para euser_lm_topvisits.php
+06-07-2010  09:51            30.116 updated.php				Renomeado para euser_lm_updated.php
+06-07-2010  09:51             2.713 userinfo.php			????
+
+23-07-2016  18:01    <DIR>          images
+23-07-2016  18:02    <DIR>          languages
+23-07-2016  18:02    <DIR>          sounds
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,4 @@
+#plugin-user-friends-list-table .ui-sortable td.options {
+  display: flex;
+  justify-content: flex-start;
+}

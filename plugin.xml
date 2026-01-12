@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e107Plugin name="User friends" lan="USER_FRIEND_FULL_NAME" version="0.1.0b" date="2025-02-05" compatibility="2.3" installRequired="true" xhtmlcompliant="true" >
+	<author name="rica-carv" email="selo.fan@gmail.com" url="https://github.com/rica-carv" />
+		<description lan="LAN_USER_FRIEND_DESC">User friends plugin</description>
+	<keywords>
+		<word>enhancement</word>
+		<word>user</word>
+		<word>info</word>
+	</keywords>
+	<category>users</category>
+	<copyright>Copyright SelosPT Selospt.tk, Licensed under GPL (http://www.gnu.org/licenses/gpl.txt)</copyright>
+	<readMe>readme.txt</readMe>
+	<adminLinks>
+		<link url='admin_config.php' description='LAN_CONFIGURE' icon='images/user_friend.png' iconSmall='images/user_friend.png' primary='true' >LAN_CONFIGURE</link>	
+	</adminLinks>
+	<pluginPrefs>
+		<pref name="userfriend_show_alert" type="boolean" default="1" title="LANAD_USERFRIENDS_10" help="LAN_USERFRIEND_PREF_SHOW_ALERT_DESC" />
+		<pref name="allow_frontend_unfriend" type="boolean" default="0" title="LANAD_USERFRIENDS_11" help="LAN_USERFRIEND_PREF_SHOW_ALERT_DESC" />
+		<pref name="show_frontend_reject" type="boolean" default="0" title="LANAD_USERFRIENDS_12" help="LAN_USERFRIEND_PREF_SHOW_ALERT_DESC" />
+	</pluginPrefs>
+	<management>
+	</management>
+</e107Plugin>
