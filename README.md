@@ -1,2 +1,5 @@
 # user_friends
-User friends plugin for E107. Based on old Another Profiles plugin for E107 CMS system  Still in beta development, but usable.  Use at own risk, i can't be responsable for any damage...
+User friends plugin for E107.
+Based on old Another Profiles plugin for E107 CMS system.
+Still in beta development, but usable.
+Use at own risk, i can't be responsable for any damage...
