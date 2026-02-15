@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<e107Plugin name="User friends" lan="USER_FRIEND_FULL_NAME" version="0.04" date="2026-02-15" compatibility="2.3" installRequired="true" xhtmlcompliant="true" >
+<e107Plugin name="User friends" lan="USER_FRIEND_FULL_NAME" version="0.05" date="2026-02-15" compatibility="2.3" installRequired="true" xhtmlcompliant="true" >
 	<author name="rica-carv" email="selo.fan@gmail.com" url="https://github.com/rica-carv" />
 	<description lan="LAN_USER_FRIEND_DESC">User friends plugin</description>
 	<keywords>
@@ -13,7 +13,6 @@
 	<adminLinks>
 		<link url='admin_config.php' description='LAN_CONFIGURE' icon='images/user_friend.png' iconSmall='images/user_friend.png' primary='true' >LAN_CONFIGURE</link>	
 	</adminLinks>
-
 
 	<dependencies>
 		<release name="e107" version="2.3.0" />
@@ -38,5 +37,9 @@
 		<pref name="log_actions" type="boolean" default="0" title="LANAD_USERFRIENDS_LOG_ACTIONS" help="LAN_USERFRIEND_PREF_LOG_ACTIONS_DESC" />
 		<pref name="per_page" type="number" default="10" title="LANAD_USERFRIENDS_PER_PAGE" help="LAN_USERFRIEND_PREF_PER_PAGE_DESC" />
 	</pluginPrefs>
+
+<extendedFields>
+    <field name="allow" type="EUF_CHECKBOX" default="1" active="true"/>
+</extendedFields>
 
 </e107Plugin>

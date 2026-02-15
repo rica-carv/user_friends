@@ -233,7 +233,39 @@ protected $create = false;
     ];
 	function init()
 	{
+    $sql = e107::getDb();
+    $prefObj = e107::getPlugConfig('user_friends');
+    $prefs = $prefObj->getPref();
+    
+    $fieldName = "plugin_user_friends_allow";
 
+    // 1. Ir buscar a realidade da BD
+    $db_val = $sql->retrieve("user_extended_struct", "user_extended_struct_applicable", "user_extended_struct_name='{$fieldName}'");
+
+    if($db_val !== false)
+    {
+        $db_applicable = intval($db_val);
+        $current_pref = isset($prefs['allow_users_disable']) ? intval($prefs['allow_users_disable']) : 0;
+
+        // 2. Sincronizar APENAS se houver discrepância
+        if (($db_applicable != 255 && $current_pref == 0) || ($db_applicable == 255 && $current_pref == 1))
+        {
+            $new_pref = ($db_applicable == 255) ? 0 : 1;
+            
+            // Atualiza a preferência no objeto e grava na BD
+            $prefObj->set('allow_users_disable', $new_pref);
+            $prefObj->save();
+            
+            // IMPORTANTE: Não toques em $this->prefs! 
+            // O e107 recarrega as definições automaticamente no runPage().
+        }
+    }
+
+//        var_dump($_POST);
+//        var_dump(e107::getPlugConfig('user_friends')->getPref());
+        // 1. Verificamos se o formulário de preferências foi submetido e gravado
+        // O e107_admin_ui define esta ação quando clicas em "Save Settings"
+        // o post_status['updated'] fica preenchido se correu bem.
 
 e107::js('settings', [
     'adminTabDependencies' => [
@@ -331,12 +363,8 @@ $this->prefs['allow_frontend_unfriend']['writeParms']['post'] =
 
 		public function afterUpdate($new_data, $old_data, $id)
 		{
-			// do something	
-                    // 1. Carregar a tua classe utilitária
-	require_once(e_PLUGIN . "user_friends/includes/user_friends_admin_class.php");
-        
-        // 2. Executar a sincronização
-        user_friends_admin_class::syncExtendedFields();
+//		var_dump($new_data);
+            // do something	
 		}
 		
 		public function onUpdateError($new_data, $old_data, $id)
@@ -581,5 +609,13 @@ new user_friends_Adminarea();
 
 require_once(e_ADMIN."auth.php");
 e107::getAdminUI()->runPage();
+
+// 2. Agora que a BD já tem os dados novos, chamamos a função
+if (isset($_POST['etrigger_save']) && $_POST['etrigger_save'] == 'update') 
+        {
+            require_once(e_PLUGIN . "user_friends/includes/user_friends_admin_class.php");
+        // 2. Executar a sincronização
+            user_friends_admin_class::syncExtendedFields();
+        }
 
 require_once(e_ADMIN."footer.php");

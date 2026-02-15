@@ -86,6 +86,7 @@ $e107_user_extended_struct = array(
 	),
 );
 */
+
 /*
         <text>Permitir Amigos</text>
         <help>Permitir pedidos de amizade de outros utilizadores.</help>

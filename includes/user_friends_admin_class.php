@@ -7,9 +7,35 @@ class user_friends_admin_class
 public static function syncExtendedFields() 
 {
     $sql = e107::getDb();
-    $prefs = e107::getPlugConfig('user_friends')->getPref();
+    $prefObj = e107::getPlugConfig('user_friends');
+    $prefs = $prefObj->getPref();
     
     $fieldName = "plugin_user_friends_allow";
+
+    // 1. Obter os dados atuais do campo na BD
+    $existing = $sql->retrieve("user_extended_struct", "user_extended_struct_id, user_extended_struct_applicable", "user_extended_struct_name='{$fieldName}'");
+
+    $current_applicable = ($existing) ? intval($existing['user_extended_struct_applicable']) : 253;
+    $new_pref_val = intval($prefs['allow_users_disable']);
+
+    if ($new_pref_val == 0) 
+    {
+        // Vais desativar? Faz backup do valor atual (se não for já 255)
+        if($current_applicable != 255) {
+            $prefObj->set('applicable_backup', $current_applicable);
+            $prefObj->save();
+        }
+        $applicable = 255;
+    } 
+    else 
+    {
+        // Vais ativar? Recupera o backup. Se não houver backup, usa 253.
+        $backup = $prefObj->getPref('applicable_backup');
+        $applicable = ($backup) ? intval($backup) : 253;
+        
+        // Se por algum motivo o backup for 255, força para 253 para não ficar invisível
+        if($applicable == 255) { $applicable = 253; }
+    }
 
     // 1. Dados base que queres garantir que estão na BD (incluindo o dinâmico)
     $field_data = array(
@@ -23,25 +49,17 @@ public static function syncExtendedFields()
         "user_extended_struct_write"      => 253,
         "user_extended_struct_required"   => intval($prefs['allow_users_disable']),
         "user_extended_struct_signup"     => 0,
-        "user_extended_struct_applicable" => 253,
+        "user_extended_struct_applicable" => $applicable,
         "user_extended_struct_order"      => 0,
         "user_extended_struct_parent"     => 0,
     );
 
-    // 2. Verificar se o registo já existe
-    $id = $sql->retrieve("user_extended_struct", "user_extended_struct_id", "user_extended_struct_name='{$fieldName}'");
-
-    if($id) 
-    {
-        // No UPDATE, adicionamos a chave WHERE ao array completo
-        $field_data['WHERE'] = "user_extended_struct_id = ".intval($id);
-        
-        // Assinatura correta e107 v2.3.3: update($table, $data_array, $use_tags)
-        return $sql->update("user_extended_struct", $field_data, false);
+    if($existing) {
+        $field_data['WHERE'] = "user_extended_struct_id = ".intval($existing['user_extended_struct_id']);
+        $sql->update("user_extended_struct", $field_data, false);
+    } else {
+        $sql->insert("user_extended_struct", $field_data);
     }
-    
-    // 3. No INSERT, usamos o array original (o motor ignora chaves inexistentes na tabela, mas o e107 é picuinhas, por isso garantimos que está limpo)
-    return $sql->insert("user_extended_struct", $field_data);
 }
 
 }
