@@ -3,22 +3,10 @@ require_once("../../../class2.php");
 if (!defined('e107_INIT')) {
     exit;
 }
-//$e107 = e107::getInstance();
-//require_once(e_BASE.'e107_plugins/user_friends/includes/_user_friend_helpers.php');
 
-//include_once(e_BASE.'e107_plugins/user_friends/includes/user_friends_trait.php');
-
-// Carrega a classe de shortcodes do plugin
-//include_once(e_PLUGIN.'user_friends/e_shortcode.php');
-
-// Instancia a classe
-//$scodes = new user_friends_shortcodes();
 
 e107::lan('user_friends', 'front', true);
-//    class friends_action 
-//{
-///////////	use Euser_global_info;
-//	use user_friends_trait;
+
 $response = [
     'status' => 'error',
     'msg'    => '',
@@ -33,226 +21,267 @@ if (!USER)
     exit;
 }
 
-$targetId = (int) ($_POST['user_id'] ?? 0);
-//$btnClass = trim($_POST['btn_class'] ?? 'btn-secondary btn-sm');
+$db     = e107::getDb();
 
-if (!$targetId || $targetId == USERID)
+/* -------------------------
+   MAP DE AÇÕES
+--------------------------*/
+/* -------------------------
+const UF_STATUS_PENDING  = 1;
+const UF_STATUS_ACCEPTED = 2;
+const UF_STATUS_REMOVED  = 0;
+const UF_STATUS_BLOCKED  = 3;
+--------------------------*/
+
+$map = [
+    'add' => [
+        'db_status'=> 1,
+        'ui_status'    => 'added',
+    ],
+    'remove_req' => [
+//        'delete'    => true,
+        'ui_status' => 'canceled',
+        'lan'       => LAN_USERFRIEND_32,
+    ],
+    'remove_fr' => [
+//        'delete'    => false,
+        'ui_status' => 'removed',
+        'lan'       => LAN_USERFRIEND_31,
+    ],
+    'accept' => [
+        'db_status' => 2,
+        'ui_status' => 'accepted',
+        'lan'       => LAN_USERFRIEND_30,
+    ],
+    'decline' => [
+        'db_status' => 0,
+        'ui_status' => 'refused',
+        'lan'       => LAN_USERFRIEND_33,
+    ],
+];
+
+$action = $_POST['fr_action'] ?? '';
+
+// Ação inválida
+if (!isset($map[$action]))
 {
-    $response['msg'] = LAN_USERFRIEND_3; // ID inválido
+    $response['msg'] = LAN_USERFRIEND_3;
     echo json_encode($response);
     exit;
 }
 
-if ($_POST['fr_action'] == 'add') {
-//    function add($parm = [])
-//{
-// --- Estado atual ---
-//$status = uf_friendship_exists(USERID, $targetId);
-//$status = $this->ufFriendshipStatus();
-/*
-  uf_friendship_exists devolve:
-  false | 0 | 1 | 2
-*/
-    $db = e107::getDb();
+$cfg = $map[$action];
 
-    $sql = "
-        SELECT status
-        FROM #user_friends
-        WHERE (from_user=" . USERID . " AND to_user={$targetId})
-           OR (from_user={$targetId} AND to_user=" . USERID . ")
-        LIMIT 1
-    ";
+$pref = function(string $key, bool $default = false) {
+    return (bool) e107::pref('user_friends', $key, $default);
+};
 
-    $db->gen($sql);
-        $row = $db->fetch();
-        if (!$row)
-        {
-/*
-            $status = (int) $row['status'];
-        }
-        else
-        {
-            $status = null;
-        }
-*/
-// --- Criar novo pedido ---
-$ok = e107::getDb()->insert('user_friends', [
-    'from_user' => USERID,
-    'to_user'   => $targetId,
-    'created'   => time(),
-    'status'    => 1
-]);
+$permMap = [
+    'add'        => ['allow_frontend_add', true],
+    'remove_req'=> ['allow_frontend_unsend', false],
+    'remove_fr' => ['allow_frontend_unfriend', false],
+    'accept'    => ['allow_frontend_accept', false],
+    'decline'   => ['allow_frontend_decline', false],
+];
 
-if (!$ok)
+if (isset($permMap[$action]))
 {
-    $response['msg'] = LAN_ERROR;
-    echo json_encode($response);
-    exit;
-}
+    [$prefKey, $def] = $permMap[$action];
 
-
-
-/*
-        $response['status'] = 'ok';
-        $response['html'] = e107::getParser()->parseTemplate('{USERFRIEND_OPTIONS}');
-
-        echo json_encode($response);
-        exit;
-*/
-    }
-//----    else
-//----    {
-        $response['status'] = 'ok';
-//        $response['html'] = e107::getParser()->parseTemplate('{USERFRIEND_OPTIONS}');
-/*
-        $scParser = e107::getScParser();
-        $scParser->registerShortcode();
-*/
-/*
-        $ufh_sc = e107::getScBatch('user_friends', 'user_friends');
-//        require_once(e_PLUGIN.'user_friends/shortcodes/batch/user_friends_shortcodes.php');
-//        $uf_sc = new plugin_user_friends_user_friends_shortcodes();
-        $tpl = e107::getTemplate('user_friends')['options'] ?? '';
-        $response['html'] = "»»»»»»»".e107::getParser()->parseTemplate($tpl, true, $ufh_sc);
-//        $response['html'] = $ufh_sc;
-*/
-// estado calculado AQUI
-/*
-$status     = 1;     // exemplo
-$justadded = true;
-*/
-// instancia batch
-/*
-$ufh_sc = e107::getScBatch('user_friends', 'user_friends_ajax');
-
-// INJETAR VARS — ÚNICA FORMA CORRETA
-$ufh_sc->setVars([
-    'status'     => $status,
-    'justadded'  => $justadded
-]);
-*/
-/*
-$response['html'] = e107::getParser()->parseTemplate(
-    '{USERFRIEND_OPTIONS}',
-    false,
-    $sc
-);
-*/
-/*
-        $tpl = e107::getTemplate('user_friends')['options'] ?? '';
-        $response['html'] = "»»»»»»»".e107::getParser()->parseTemplate("blablalblalallalal");
-*/
-/*
-$tp = e107::getParser();
-$tp->setScBatch('user_friends', 'user_friends');
-
-$tpl = e107::getTemplate('user_friends')['options'] ?? '';
-$response['html'] = $tp->parseTemplate($tpl);
-*/
- //       $response['html'] = "testetestete";
-
- /*
-require_once(e_PLUGIN.'user_friends/shortcodes/batch/user_friends_ajax.php');
-$ufh_sc = new plugin_user_friends_user_friends_ajax_shortcodes();
-*/
-// Funciona.... $ufh_sc = e107::getScBatch('user_friends_ajax', 'user_friends');
-$ufh_sc = e107::getScBatch('user_friends', 'user_friends');
-$ufh_sc->setVars([
-    'status'    => 'added'
-]);
-$tp = e107::getParser();
-$tpl = e107::getTemplate('user_friends')['options'] ?? '';
-$response['html'] = $tp->parseTemplate($tpl, false,$ufh_sc);
-
-        echo json_encode($response);
-        exit;
-//        $status = null;
-//    }
-
-
-
-// Já existe → apenas informativo
-//if ($status !== null)
-//{
-/*--
-    switch ((int) $status)
+    if (!$pref($prefKey, $def))
     {
-        case 2:
-            $text = LAN_USERFRIEND_9; // Amigos
-            break;
-
-        case 1:
-            $text = LAN_USERFRIEND_11; // Pedido enviado
-            break;
-
-        default:
-            $text = LAN_USERFRIEND_12; // Rejeitado / bloqueado
+        $response['msg'] = LAN_NO_PERMISSIONS;
+        echo json_encode($response);
+        exit;
     }
----*/
-/*
-    $response['status'] = 'ok';
-/*---
-    $response['html']   =
-        "<span class='e-tip title='{$text}'><button class='{$btnClass} disabled'>{$text}</button></span>";
----*/
-/*
-    $response['html'] = e107::getParser()->parseTemplate('{USERFRIEND_CONTROLS}');
-
-    echo json_encode($response);
-    exit;
 }
-*/
-// --- Criar novo pedido ---
-/*
-$ok = e107::getDb()->insert('user_friends', [
-    'from_user' => USERID,
-    'to_user'   => $targetId,
-    'created'   => time(),
-    'status'    => 1
-]);
 
-if (!$ok)
+
+/* -------------------------
+   ADD FRIEND
+--------------------------*/
+if ($action === 'add')
 {
-    $response['msg'] = LAN_ERROR;
+           //    $targetId = $cfg['uid'];
+    $targetId = (int) ($_POST['user_id'] ?? 0);
+    if (!$targetId || $targetId === USERID)
+    {
+        $response['msg'] = LAN_USERFRIEND_3;
+        echo json_encode($response);
+        exit;
+    }
+
+    $row = $db->retrieve(
+        'user_friends',
+        'friends_id',
+        "
+        (from_user=" . USERID . " AND to_user={$targetId})
+        OR
+        (from_user={$targetId} AND to_user=" . USERID . ")
+        "
+    );
+
+    if (!$row)
+    {
+        $friendsId = $db->insert('user_friends', [
+            'from_user' => USERID,
+            'to_user'   => $targetId,
+            'created'   => time(),
+            'status'    => (int) $cfg['db_status']
+        ]);
+
+        if (!$friendsId)
+        {
+            $response['msg'] = LAN_ERROR;
+        }
+    }
+    else
+{
+    $response['msg'] = LAN_USERFRIEND_12; // já existe / pendente
     echo json_encode($response);
     exit;
 }
-*/
-// --- Resposta final ---
-/*
+
+}
+
+if (($action !== 'add'))
+{
+    $friendsId = (int) ($_POST['friends_id'] ?? 0);
+
+    if (!$friendsId)
+    {
+        $response['msg'] = LAN_USERFRIEND_3;
+        echo json_encode($response);
+        exit;
+    }
+}
+
+/* -------------------------
+   DELETE (remove)
+--------------------------*/
+if ($action === 'remove_req')
+{
+    $result = $db->delete(
+        'user_friends',
+        "friends_id={$friendsId} AND (from_user=" . USERID . " OR to_user=" . USERID . ") AND status=1"
+    );
+
+    if ($result === false)
+    {
+        e107::getLog()->addError('UserFriends: delete failed (DB error)');
+        $response['msg'] = LAN_ERROR;
+    }
+
+    if ($result === 0)
+    {
+        $response['msg'] = LAN_USERFRIEND_3;
+    }
+}
+/* -------------------------
+   REMOVER AMIZADE (remover/marcar)
+--------------------------*/
+if ($action === 'remove_fr')
+{
+    $delete = (bool) e107::pref('user_friends', 'delete_on_unfriend', false);
+    $block  = e107::pref('user_friends', 'block_after_remove', false) ? 3 : 0;
+
+    $where = "friends_id={$friendsId} AND (from_user=" . USERID . " OR to_user=" . USERID . ") AND status=2";
+
+    $result = $delete 
+        ? $db->delete('user_friends', $where)
+        : $db->update('user_friends', ['status' => $block, 'WHERE' => $where]);
+
+    if ($result === false)
+    {
+        e107::getLog()->addError('UserFriends: remove_fr failed');
+        $response['msg'] = LAN_ERROR;
+    }
+    elseif ($result === 0)
+    {
+        $response['msg'] = LAN_USERFRIEND_3;
+    }
+}
+
+
+/* -------------------------
+   UPDATE (accept / decline)
+--------------------------*/
+if ($action === 'accept' || $action === 'decline')
+{
+    $result = $db->update('user_friends', [
+        'status' => (int) $cfg['db_status'],
+        'WHERE' => 'friends_id=' . $friendsId . '
+           AND to_user=' . USERID . '
+           AND status=1'
+    ]);
+
+    if ($result === false)
+    {
+        e107::getLog()->addError('UserFriends: update failed (DB error)');
+        $response['msg'] = LAN_ERROR;
+    }
+}
+
+if ($response['msg']) {
+// 1. Mensagens frontend (msg / alerts)
+if (!e107::pref('user_friends', 'show_frontend_messages', true))
+{
+    unset($response['msg']);
+}
+        echo json_encode($response);
+        exit;
+}
+// ---------------------------------
+// CONTROLO FINAL DE PREFS
+// ---------------------------------
+
+// 2. Logging
+if (e107::pref('user_friends', 'log_actions'))
+{
+    e107::getLog()->add('USER_FRIEND', [
+        'action'     => $action,
+        'friends_id'=> $friendsId ?? null,
+        'user'       => USERID,
+    ]);
+}/* -------------------------
+   RESPOSTA FINAL
+--------------------------*/
 $response['status'] = 'ok';
-$response['msg']    = LAN_USERFRIEND_11;
-$response['html']   =
-    "<span class='e-tip' title='".LAN_USERFRIEND_11."'><button class='{$btnClass} btn-info disabled'>".LAN_USERFRIEND_11."</button></span>";
-*/
-//$parm = ['justadded' => true]; // ou false, conforme a situação
+$page = $_POST['act_page'] ?? '';
 
-//----------$response['html'] = e107::getParser()->parseTemplate('{USERFRIEND_OPTIONS}');
-/*
-$sc = new user_friends_shortcodes();
-$status = 1; // ou calcula status
-$response['html'] = $sc->sc_userfriend_options([
-    'status'    => $status,
-    'justadded' => true
-]);
-*/
-//----$response['html'] = e107::getParser()->parseTemplate('{USERFRIEND_OPTIONS:justadded=true}');
-//$response['html'] = $scodes->sc_userfriend_options(['justadded' => true]);
-//$sc->status = 1;           // ou 2, conforme o teste
-//$sc->justadded = true;     // ou false
-//$response['html'] = $sc->sc_userfriend_options(['justadded' => true]);
-//----echo json_encode($response);
-//----exit;
-//}
-//----}
-//}
+//$response['debug'] = $page;
+//$response['debug'] .= (str_contains($page, 'user_friends.php'));
 
-//$action = $_POST['fr_action'];
-// Inicializa a UI
-//if ($_POST['fr_action'] == 'add') {
-//    new friends_action()->add();
+if (str_contains($page, 'user_friends.php'))
+{
+    $msg = e107::getMessage();
+    if (!empty($cfg['lan'])) {
+        $msg->addSuccess($cfg['lan']);
+    }
+    $containerHtml = '<div data-userfriend-container="">';
+$containerHtml .= $msg->render(); // a mensagem de feedback
+$containerHtml .= '</div>';
+$response['html'] = $containerHtml;
 }
-else if ($_POST['fr_action'] == 'remove') {
-//    new friends_action()->remove();
-}
+else
+{
+$tpl    = e107::getTemplate('user_friends')['options_action'] ?? '';
+$ufh_sc = e107::getScBatch('user_friends', 'user_friends');
 
+       $ufh_sc->setVars([
+            'status' => $cfg['ui_status'],
+            'friends_id' => $friendsId
+        ]);
+
+        $response['html'] = e107::getParser()->parseTemplate($tpl, false, $ufh_sc);
+    }
+
+// 3. Auto reset
+$delay     = (int) e107::pref('user_friends', 'reset_delay', 0);
+
+if (!empty(e107::pref('user_friends', 'autoreset')) && $delay > 0)
+{
+    $response['reset'] = $delay;
+}
+echo json_encode($response);
+exit;

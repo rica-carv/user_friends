@@ -2,3 +2,5 @@
   display: flex;
   justify-content: flex-start;
 }
+#reset-delay, #reset-counter{display: inline;}
+#reset-counter + div.bootstrap-switch, #reset-counter-1 + div.bootstrap-switch {display: inline-block;}

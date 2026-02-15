@@ -1,0 +1,55 @@
+.userfriends.layout-list .userfriend-item {
+    display: flex;
+    justify-content: space-between;
+    padding: .5rem 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.userfriends.layout-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
+    gap: 1rem;
+}
+
+.userfriends.layout-cards .userfriend-item {
+    border: 1px solid #ddd;
+    padding: 1rem;
+}
+
+/* Overlay invisível que bloqueia clique e força cursor wait */
+[data-userfriend-controls] button[data-userfriend-action]:disabled::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0); /* invisível */
+    cursor: wait;          /* cursor de espera */
+    pointer-events: auto;  /* permite cursor, bloqueia clique */
+}
+
+/* Cancelar efeitos hover/focus/active */
+[data-userfriend-controls] button[data-userfriend-action]:disabled:hover,
+[data-userfriend-controls] button[data-userfriend-action]:disabled:focus,
+[data-userfriend-controls] button[data-userfriend-action]:disabled:active {
+    background-color: inherit !important;
+    color: inherit !important;
+}
+
+.uf-pending {
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.85;
+}
+
+.uf-pending::before {
+    content: "";
+    width: .875rem;
+    height: .875rem;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: uf-spin .6s linear infinite;
+}
+@keyframes uf-spin {
+    0%   { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
