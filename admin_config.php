@@ -7,53 +7,6 @@ if (!getperms("P")) { e107::redirect("admin"); exit; }
 e107::lan('user_friends', 'admin', true);
 e107::css('user_friends', 'admin.css');
 
-
-	$fieldList = array(
-		'plugin_user_friends_allow' => 'radio'
-	);
-
-	$failed = false;
-	$ext = e107::getUserExt();
-	$mes = e107::getMessage();
-	foreach($fieldList as $fieldName => $fieldType)
-	{
-
-		$result = $ext->user_extended_add_system($fieldName, $fieldType);
-
-		if($result === true)
-		{
-			$mes->addSuccess('Creating extended user field user_' . $fieldName);
-		}
-		else
-		{
-			$mes->addError('Creating extended user field user_' . $fieldName);
-			$mes->addDebug(print_a($result, true));
-			$failed = true;
-		}
-	}
-
-	if($failed)
-	{
-		$mes->addError("Creation of extended field(s) failed.  You can not continue until these are create successfully!");
-
-	}
-
-	var_dump($mes->render());
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 if(!file_exists(e_PLUGIN."ecore/includes/user_trait.php")) {
     e107::getMessage()->addError("O módulo ecore é necessário para este plugin.");
 }
@@ -625,3 +578,4 @@ require_once(e_ADMIN."auth.php");
 e107::getAdminUI()->runPage();
 
 require_once(e_ADMIN."footer.php");
+
