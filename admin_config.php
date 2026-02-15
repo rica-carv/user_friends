@@ -332,6 +332,11 @@ $this->prefs['allow_frontend_unfriend']['writeParms']['post'] =
 		public function afterUpdate($new_data, $old_data, $id)
 		{
 			// do something	
+                    // 1. Carregar a tua classe utilitária
+	require_once(e_PLUGIN . "user_friends/includes/user_friends_admin_class.php");
+        
+        // 2. Executar a sincronização
+        user_friends_admin_class::syncExtendedFields();
 		}
 		
 		public function onUpdateError($new_data, $old_data, $id)
@@ -578,4 +583,3 @@ require_once(e_ADMIN."auth.php");
 e107::getAdminUI()->runPage();
 
 require_once(e_ADMIN."footer.php");
-
