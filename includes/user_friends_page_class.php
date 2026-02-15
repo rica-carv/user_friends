@@ -1,4 +1,5 @@
 <?php
+if (!defined('e107_INIT')) { exit; }
 class user_friends_page
 {
     protected int $ownerId;

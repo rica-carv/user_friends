@@ -1,4 +1,5 @@
 <?php
+if (!defined('e107_INIT')) { exit; }
 include_once(e_PLUGIN . "ecore/includes/user_trait.php");
 trait user_friends_trait
 {

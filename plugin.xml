@@ -23,19 +23,19 @@
 		<pref name="allow_frontend_add" type="boolean" default="1" title="LANAD_USERFRIENDS_23" help="LAN_USERFRIEND_PREF_ALLOW_ADD_DESC" />
 		<pref name="allow_users_disable" type="boolean" default="0" title="LANAD_USERFRIENDS_35" help="LAN_USERFRIEND_PREF_ALLOW_ADD_DESC" />
 		<pref name="show_alert" type="boolean" default="1" title="LANAD_USERFRIENDS_10" help="LAN_USERFRIEND_PREF_SHOW_ALERT_DESC" />
-		<pref name="show_frontend_messages" type="boolean" default="1" title="LANAD_USERFRIENDS_SHOW_MESSAGES" help="LAN_USERFRIEND_PREF_SHOW_MESSAGES_DESC" />
+		<pref name="show_frontend_messages" type="boolean" default="1" title="LANAD_USERFRIENDS_16" help="LAN_USERFRIEND_PREF_SHOW_MESSAGES_DESC" />
 		<pref name="show_frontend_reject" type="boolean" default="0" title="LANAD_USERFRIENDS_12" help="LAN_USERFRIEND_PREF_SHOW_REJECT_DESC" />
 		<pref name="allow_frontend_unsend" type="boolean" default="0" title="LANAD_USERFRIENDS_13" help="LAN_USERFRIEND_PREF_ALLOW_UNSEND_DESC" />
-		<pref name="allow_frontend_accept" type="boolean" default="1" title="LANAD_USERFRIENDS_ALLOW_ACCEPT" help="LAN_USERFRIEND_PREF_ALLOW_ACCEPT_DESC" />
-		<pref name="allow_frontend_decline" type="boolean" default="1" title="LANAD_USERFRIENDS_ALLOW_DECLINE" help="LAN_USERFRIEND_PREF_ALLOW_DECLINE_DESC" />
+		<pref name="allow_frontend_accept" type="boolean" default="1" title="LANAD_USERFRIENDS_24" help="LAN_USERFRIEND_PREF_ALLOW_ACCEPT_DESC" />
+		<pref name="allow_frontend_decline" type="boolean" default="1" title="LANAD_USERFRIENDS_25" help="LAN_USERFRIEND_PREF_ALLOW_DECLINE_DESC" />
 		<pref name="allow_frontend_unfriend" type="boolean" default="0" title="LANAD_USERFRIENDS_11" help="LAN_USERFRIEND_PREF_ALLOW_UNFRIEND_DESC" />
 		<pref name="delete_on_unfriend" type="boolean" default="0" />
 		<pref name="block_after_remove" type="boolean" default="0" />
-		<pref name="autoreset" type="boolean" default="0" title="LANAD_USERFRIENDS_AUTO_RESET" help="LAN_USERFRIEND_PREF_AUTO_RESET_DESC" />
+		<pref name="autoreset" type="boolean" default="0" title="LANAD_USERFRIENDS_27" help="LAN_USERFRIEND_PREF_AUTO_RESET_DESC" />
 		<pref name="reset_delay" type="number" default="5000" title="LANAD_USERFRIENDS_15" help="LAN_USERFRIEND_PREF_RESET_DELAY_DESC" />
 		<pref name="reset_counter" type="boolean" default="1" title="LANAD_USERFRIENDS_14" help="LAN_USERFRIEND_PREF_RESET_COUNTER_DESC" />
-		<pref name="log_actions" type="boolean" default="0" title="LANAD_USERFRIENDS_LOG_ACTIONS" help="LAN_USERFRIEND_PREF_LOG_ACTIONS_DESC" />
-		<pref name="per_page" type="number" default="10" title="LANAD_USERFRIENDS_PER_PAGE" help="LAN_USERFRIEND_PREF_PER_PAGE_DESC" />
+		<pref name="log_actions" type="boolean" default="0" title="LANAD_USERFRIENDS_28" help="LAN_USERFRIEND_PREF_LOG_ACTIONS_DESC" />
+		<pref name="per_page" type="number" default="10" title="LANAD_USERFRIENDS_5" help="LAN_USERFRIEND_PREF_PER_PAGE_DESC" />
 	</pluginPrefs>
 
 <extendedFields>

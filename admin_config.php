@@ -1,5 +1,6 @@
 <?php
 require_once("../../class2.php");
+if (!defined('e107_INIT')) { exit; }
 if (!getperms("P")) { e107::redirect("admin"); exit; }
 
 //require_once(e_ADMIN."auth.php");

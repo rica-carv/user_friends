@@ -40,10 +40,10 @@ public static function syncExtendedFields()
     // 1. Dados base que queres garantir que estão na BD (incluindo o dinâmico)
     $field_data = array(
         "user_extended_struct_name"       => $fieldName,
-        "user_extended_struct_text"       => "Permitir Amigos",
+        "user_extended_struct_text"       => LANAD_USERFRIENDS_23,
         "user_extended_struct_type"       => 2,
-        "user_extended_struct_parms"      => "plugin_user_friends^,^^,^^,^0^,^^,^Permitir pedidos de amizade de outros utilizadores.",
-        "user_extended_struct_values"     => "Sim,Não",
+        "user_extended_struct_parms"      => "plugin_user_friends^,^^,^^,^0^,^^,^".LANAD_USERFRIENDS_36,
+        "user_extended_struct_values"     => LAN_YES.",".LAN_NO,
         "user_extended_struct_default"    => "1",
         "user_extended_struct_read"       => 253,
         "user_extended_struct_write"      => 253,
