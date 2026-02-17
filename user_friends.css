@@ -26,6 +26,19 @@
     pointer-events: auto;  /* permite cursor, bloqueia clique */
 }
 
+.uf-badge-new {
+    position: absolute;
+    top: .75em;
+    left: 2.5em;
+    /* Define o tamanho real para não colapsar */
+    width: 10px;
+    height: 10px;
+    /* Centra o ponto na quina do avatar */
+    transform: translate(30%, -30%); 
+    display: block;
+    z-index: 5;
+}
+
 /* Cancelar efeitos hover/focus/active */
 [data-userfriend-controls] button[data-userfriend-action]:disabled:hover,
 [data-userfriend-controls] button[data-userfriend-action]:disabled:focus,

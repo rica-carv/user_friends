@@ -82,7 +82,7 @@ e107::css('user_friends', 'user_friends.css');
     ]);
     */
 //    var_dump ($this->ufFriendshipStatus());
-    $uf_sc->addVars($this->ufFriendshipStatus()); // Isto tem de ser addvars senão limpa as vars todas.....
+    $uf_sc->setVars($this->ufFriendshipStatus()); // Isto tem de ser addvars senão limpa as vars todas.....
 
 //    $templates = e107::getTemplate('user_friends');
 
@@ -94,7 +94,7 @@ e107::css('user_friends', 'user_friends.css');
     ];
 */
 //var_dump($uf_sc->getVars());
-//var_dump($parm);
+//echo "<hr>";//var_dump($parm);
 //var_dump(!empty($parm['edit']));
 // contexto visual
 /*

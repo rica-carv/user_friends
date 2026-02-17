@@ -647,6 +647,8 @@ function sc_userfriend_pagination()
         $text = '';
 //        $uid = $this->var['user_id'];
         $tmpl_ini = ($this->var['user_id'] <> USERID)?"normal":"edit";
+        $tmpvar = $this->var;
+        unset($tmpvar['rows']);
         foreach ($this->var['rows'] as $row)
         {
 //var_dump ($this->var);
@@ -668,9 +670,11 @@ function sc_userfriend_pagination()
                 $this
             );
         }
+        $this->var = $tmpvar;
+//        unset($tmpvar['rows']);
 //var_dump ($this->var);
         //Não é melhor limpar a var rows? Já não preciso delas...
-        $this->var['rows'] = null;
+//        $this->var['rows'] = null;
 //echo "<hr><hr><hr><hr>";
 //var_dump ($this->getvars());
 
@@ -757,8 +761,8 @@ function sc_userfriend_new_icon($parm = [])
         return '';
     }
 
-    return '<i class="bi bi-dot text-danger ms-1"
-        title="'.(int)$counts[$type].' new"></i>';
+//    return '<i class="bi bi-dot text-danger ms-1" title="'.(int)$counts[$type].' new"></i>';
+        return '<span class="uf-badge-new bg-danger border border-light rounded-circle" title="'.(int)$counts[$type].' new"></span>';
 }
 
 function sc_userfriend_item_new_icon()
@@ -770,8 +774,8 @@ function sc_userfriend_item_new_icon()
         return '';
     }
 
-    return '<i class="bi bi-dot text-danger ms-1"
-        title="New"></i>';
+//    return '<i class="bi bi-dot text-danger ms-1" title="New">*</i>';
+        return '<span class="uf-badge-new bg-danger border border-light rounded-circle" title="New"></span>';
 }
 
 function sc_userfriend_new_count($parm = [])
