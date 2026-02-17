@@ -493,7 +493,7 @@ protected function renderStatusButton($expectedStatus, $lan, $defaultClass, $par
         <span class='e-tip' title='{$lan}'>
             <button class='btn {$classes} userfriend-btn" .
                 (
-                    e107::pref('user_friends', 'reset_counter')
+                    e107::pref('user_friends', 'reset_counter') & (e107::pref('user_friends', 'reset_delay') >0)
                     ? " uf-pending"
                     : ""
                 ) .
@@ -502,6 +502,7 @@ protected function renderStatusButton($expectedStatus, $lan, $defaultClass, $par
                 data-userfriend-id='{$this->var['friends_id']}'
                 data-action='{$expectedStatus}'
                 aria-disabled='true'
+                disabled
                 >
                 {$lan}
             </button>
@@ -594,6 +595,8 @@ function sc_userfriend_notok($parm = '')
 
 function sc_userfriend_pagination()
 {
+//echo "<hr>";
+//var_dump($this->var['counts']);
     if (empty($this->var['total'])) {
         return '';
     }
@@ -632,6 +635,9 @@ function sc_userfriend_pagination()
             return LAN_NO_RESULTS_FOUND;
         }
         */
+//echo "<pre>";
+//var_dump ($this->var);
+//echo "</pre>";
 
         if (empty($this->var['rows'])) {
 //             $this->sc_message=e107::getMessage()->addInfo(LAN_NO_RESULTS_FOUND);
@@ -643,10 +649,14 @@ function sc_userfriend_pagination()
         $tmpl_ini = ($this->var['user_id'] <> USERID)?"normal":"edit";
         foreach ($this->var['rows'] as $row)
         {
+//var_dump ($this->var);
             $this->addVars([
                 'row'    => $row,
 //                'status' => $this->ufFriendshipStatus($row),
             ]);
+//echo "<hr><hr><hr><hr>";
+//var_dump ($this->var);
+//echo "<hr><hr><hr><hr>";
 //            var_dump($this->var['user_id']);
             if (e107::isInstalled('euser')) {
                 $GLOBALS['euser_vars']['user_id'] = $this->ufRowUserId($this->var['user_id']);
@@ -658,9 +668,13 @@ function sc_userfriend_pagination()
                 $this
             );
         }
-
+//var_dump ($this->var);
         //Não é melhor limpar a var rows? Já não preciso delas...
         $this->var['rows'] = null;
+//echo "<hr><hr><hr><hr>";
+//var_dump ($this->getvars());
+
+//        var_dump ($this->var);
 
         return $text;
     }

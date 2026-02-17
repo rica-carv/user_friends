@@ -60,7 +60,7 @@ class user_friends_page
 
         $db->select('user_friends', '*', $where." ORDER BY created DESC LIMIT {$this->from},{$this->perPage}");
         $this->rows  = $db->rows();
-        $this->total = count($this->rows);
+        $this->total = $this->counts[$this->view] ?? 0;
     }
 
     public function render(bool $textonly = false)

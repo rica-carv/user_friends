@@ -82,7 +82,7 @@ e107::css('user_friends', 'user_friends.css');
     ]);
     */
 //    var_dump ($this->ufFriendshipStatus());
-    $uf_sc->setVars($this->ufFriendshipStatus());
+    $uf_sc->addVars($this->ufFriendshipStatus()); // Isto tem de ser addvars senão limpa as vars todas.....
 
 //    $templates = e107::getTemplate('user_friends');
 
