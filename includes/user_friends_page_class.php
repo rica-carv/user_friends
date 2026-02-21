@@ -84,16 +84,17 @@ class user_friends_page
         'user_friends/' . (!empty($_GET['id']) ? 'page' : 'edit_page')
     );
         if ($textonly) {
-            return $tp->parseTemplate('{USERFRIEND_MESSAGE}{USERFRIEND_ITEMS}', true, $sc);
+            return $tp->parseTemplate('{USERFRIEND_MESSAGE}{USERFRIEND_ITEMS}{USERFRIEND_MAIN}', true, $sc);
         }
+        $text =$tp->parseTemplate($template['page'], true, $sc);
+        $sc->wrapper('user_friends/caption');
         e107::getRender()->tablerender(
-            (!empty($_GET['id']) ? str_replace('[x]', e107::user($_GET['id'])['user_name'], LAN_USERFRIEND_2) : LAN_USERFRIEND_4),
-            $tp->parseTemplate($template['page'], true, $sc)
-        );
+            ($template['caption']?$tp->parseTemplate($template['caption'], true, $sc):(!empty($_GET['id']) ? str_replace('[x]', e107::user($_GET['id'])['user_name'], LAN_USERFRIEND_2) : LAN_USERFRIEND_4)),
+            $text);
     }
-    public function getCount(string $key): int
+    public function getCount(string $key = null): mixed
 {
-    return $this->counts[$key] ?? 0;
+    return ($key === null) ? $this->counts : $this->counts[$key] ?? 0;
 }
 
 }

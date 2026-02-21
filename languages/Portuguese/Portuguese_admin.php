@@ -68,3 +68,4 @@ define("LANAD_USERFRIENDS_32", "Bloquear novo pedido após remover amizade");
 define("LANAD_USERFRIENDS_33", "Impede que o mesmo utilizador volte a enviar pedidos de amizade após a remoção.");
 define("LANAD_USERFRIENDS_34", "Actualizar automaticamente o estado dos pedidos de amizade.");
 define("LANAD_USERFRIENDS_35", "Permitir aos utilizadores desativar o envio de pedidos de amizade?");
+define("LANAD_USERFRIENDS_36", "Permitir pedidos de amizade de outros utilizadores.");

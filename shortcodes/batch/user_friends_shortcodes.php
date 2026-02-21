@@ -585,7 +585,7 @@ function sc_userfriend_notok($parm = '')
 
     function sc_userfriend_tab_active($parm)
     {
-        return ($this->var['view'] === $parm) ? 'active' : '';
+        return ($this->var['view'] === $parm['type']) ? 'active' : '';
     }
 
     function sc_userfriend_url($parm)
@@ -690,16 +690,30 @@ function sc_userfriend_pagination()
             return LAN_NO_RESULTS_FOUND;
         }
         */
-//        var_dump($this->var);
+//        var_dump(strpos(e_PAGE, "user_friends"));
 
         if (empty($this->var['rows'])) {
     		$mtext = array(
-	    		'friends' => LAN_USERFRIEND_34,
+                'default' => LAN_USERFRIEND_1,
+                'friends' => LAN_USERFRIEND_34,
                 'sent' => LAN_USERFRIEND_35,        
                 'received' => LAN_USERFRIEND_36
             );            
-
-            e107::getMessage()->addInfo($mtext[$this->var['view']]);
+/*
+var_dump($this->var['user_id']);
+var_dump(USERID);
+var_dump($this->var['user_id']==USERID);
+var_dump($this->var['user_id']==USERID?$this->var['view']:"default");
+*/
+            $msg = e107::getMessage();
+            $msg->setClose(false, E_MESSAGE_INFO);
+            if (($this->var['user_id']==USERID) && strpos(e_PAGE, "user_friends") === false) {
+                $sent = $this->var['counts']['sent'];
+                $text="<br>".($sent>0?str_replace("[x]", $sent, LAN_USERFRIEND_37):$mtext['sent']);
+                $received = $this->var['counts']['received'];
+                $text.="<br>".($received>0?str_replace("[x]", $received, LAN_USERFRIEND_38):$mtext['received']);
+            }
+            $msg->addInfo($mtext[$this->var['user_id']==USERID?$this->var['view']:"default"].$text);
 //            return e107::getMessage()->render();
             }
 

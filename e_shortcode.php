@@ -190,5 +190,145 @@ public function sc_userfriend_list()
         return $page->getCount('friends');
     }
 
+    // Mostra apenas o número total de amigos
+    public function sc_userfriend_main($parm = null)
+    {
+//        var_dump ($this->ufTargetId());
+//        var_dump (USERID);
+//        require_once(e_PLUGIN.'user_friends/includes/user_friends_page_class.php');
+
+/*
+    $page = new user_friends_page([
+        'id'     => $this->ufTargetId()
+    ]);
+*/
+        $text = e_PLUGIN.'/user_friends/user_friends.php';
+        $id = $this->ufTargetId();
+
+                require_once(e_PLUGIN.'user_friends/includes/user_friends_page_class.php');
+    $page = new user_friends_page([
+        'id'     => $id
+    ]);
+//        var_dump($page->getCount('friends'));
+        if ($parm['admin'] == 'forced'){
+            if(!$id && USERID) {
+                return $text;
+            } else {
+                return '';
+            }
+        }
+
+            if($page->getCount('friends')>0) {
+                return $text.($id ? '?id='.$id : '');
+            } else {
+                return '';
+            }
+    }
+
+	function sc_userfriend_nav($parm=null)
+{
+//	echo "<hr><hr><hr><hr><hr><hr><hr>";
+//	var_dump(e107::isInstalled('user_friends'));
+    if(!e107::isInstalled('user_friends'))
+    {
+        return null;
+    }
+
+    if(!USERID) // apenas utilizadores logados
+    {
+        return null;
+    }
+
+    $tp = e107::getParser();
+/*
+    require_once(e_PLUGIN."user_friends/user_friends_class.php");
+
+    $friends = new user_friends;
+
+    // Número de pedidos pendentes
+    $pending = $friends->getPendingCount(USERID);
+
+    $count = '';
+    if(!empty($pending))
+    {
+        $count = "<span class='badge bg-danger'>".$pending."</span>";
+    }
+*/
+    $icon = $tp->toGlyph('fa-solid fa-user-group');
+
+// IMPLEMENTAR QUANDO TIVER SEF A FUNCIONAR
+    /*
+    $urlFriends   = e107::url('user_friends','friends');
+    $urlRequests  = e107::url('user_friends','requests');
+    $urlFind      = e107::url('user_friends','find');
+*/
+/////$urlFriends   = e_SELF . '?view=' . $parm . '&layout=' . ($this->var['layout'] ?? 'list');
+//$urllayout   = ($this->var['layout'] ?? 'list');
+/*
+$urlFriends   =         '<a class="dropdown-item icon-link" href="{USERFRIEND_URL=friends}">
+            i class="fa-solid fa-user-group"></i>{LAN=LAN_USERFRIEND_4}
+                <small><span class="badge">
+        {USERFRIEND_COUNT=friends}{USERFRIEND_NEW_COUNT=type:friends_new}
+    </span></small>
+        </a>
+    {USERFRIEND_NEW_ICON=type:friends_new}';
+$urlSent   = e_SELF . '?view=sent&layout=' . $urllayout;
+$urlReceived   = e_SELF . '?view=received&layout=' . $urllayout;
+*/
+    $uf_sc = e107::getScBatch('user_friends', 'user_friends');
+
+//    $context = $parm['context'] ?? 'public';
+// Também pode ser addvars
+/*
+    $uf_sc->addVars([
+//        'status'    => $this->ufFriendshipStatus()['sta'],
+        'justadded' => !empty($parm['justadded']),
+//        'context'   => $context,
+    ]);
+    */
+//    var_dump ($this->ufFriendshipStatus());
+    $uf_sc->setVars($this->ufFriendshipStatus()); // Isto tem de ser addvars senão limpa as vars todas.....
+    require_once(e_PLUGIN.'user_friends/includes/user_friends_page_class.php');
+    $page = new user_friends_page();
+//    $counts['friends'] = $page->getCount();
+    $uf_sc->addVars(array( 'counts' => $page->getCount()));
+
+    return $tp->parseTemplate('
+        <a class="uf-nav nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+    '.$icon.
+    ($new || $unread ? 
+      '<span class="position-absolute top-0 translate-middle p-1 bg-'.$badgeClass.' border border-light rounded-circle"></span>'
+      :
+      ""
+    )
+    .'</a>
+    <ul class="dropdown-menu dropdown-menu-end">
+        <li>
+           <a class="dropdown-item icon-link" href="{USERFRIEND_URL=friends}">
+            <i class="fa-solid fa-user-group"></i>{LAN=LAN_USERFRIEND_4}
+                <span class="badge">
+        {USERFRIEND_COUNT=friends}{USERFRIEND_NEW_COUNT=type:friends_new}
+    </span>
+        </a>
+    {USERFRIEND_NEW_ICON=type:friends_new}
+
+        <a class="dropdown-item icon-link" href="{USERFRIEND_URL=sent}">
+            <i class="fa-solid fa-user-clock"></i>{LAN=LAN_USERFRIEND_5}
+                        <span class="badge">
+        {USERFRIEND_COUNT=sent}
+    </span>
+        </a>
+
+        <a class="dropdown-item icon-link" href="{USERFRIEND_URL=received}">
+            <i class="fa-solid fa-user-plus"></i>{LAN=LAN_USERFRIEND_6}
+                           <span class="badge">
+        {USERFRIEND_COUNT=received}{USERFRIEND_NEW_COUNT=type:received_new}
+    </span>
+        </a>
+    {USERFRIEND_NEW_ICON=type:received_new}
+
+        </li>
+    </ul>', true, $uf_sc);
+}
 
 }
