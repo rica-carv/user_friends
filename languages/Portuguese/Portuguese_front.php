@@ -18,6 +18,21 @@ define("LAN_USERFRIEND_12", "Pedido amizade pendente");
 define("LAN_USERFRIEND_13", "Pedido indisponível"); // Quando é recusado ou "apagado"...
 define("LAN_USERFRIEND_14", "Aceitar pedido"); // Quando é recusado ou "apagado"...
 define("LAN_USERFRIEND_15", "Rejeitar pedido"); // Quando é recusado ou "apagado"...
+define("LAN_USERFRIEND_16", "O sistema de amigos está temporariamente desativado pelo administrador do site.<br>
+Seus amigos atuais ainda estão visíveis, mas as suas configurações não ficarão activas até que o sistema seja reativado.");
+/*
+Friends system is currently disabled by the site administrator.
+Your existing friends are still visible but settings cannot be modified.
+*/
+define("LAN_USERFRIEND_20", "Permitir que outros utilizadores lhe enviem pedidos de amizade?");
+define("LAN_USERFRIEND_21", "Aceitar automaticamente pedidos de amizade?");
+define("LAN_USERFRIEND_22", "Ser notificado por email sobre novos pedidos de amizade?");
+define("LAN_USERFRIEND_23", "Ser notificado por mensagem privada sobre novos pedidos de amizade?");
+define("LAN_USERFRIEND_24", "Definir visibilidade do perfil");
+define("LAN_USERFRIEND_25", "Público");
+define("LAN_USERFRIEND_26", "Amigos");
+define("LAN_USERFRIEND_27", "Privado");
+
 
 define("LAN_USERFRIEND_30", "Pedido amizade aceite");
 define("LAN_USERFRIEND_31", "Amigo removido");
