@@ -38,14 +38,14 @@ if (!defined('USER_FRIENDS_PLUGIN_PATH')) {
 }
 
 //include_once(e_PLUGIN . "ecore/includes/user_trait.php");
-
+require_once(e_PLUGIN.'user_friends/includes/user_friends_prefs.php');
 //require_once(e_BASE.'e107_plugins/user_friends/includes/user_friend_helpers.php');
 include_once(e_BASE.'e107_plugins/user_friends/includes/user_friends_trait.php');
 
     class plugin_user_friends_user_friends_shortcodes extends e_shortcode
 {
 ///////////	use Euser_global_info;
-	use user_friends_trait;
+	use UserFriendsTrait;
 //	protected $tp;
 //	protected $sql;
 //    protected $template;
@@ -116,6 +116,8 @@ function sc_userfriend_add($parm = '')
 if (!e107::pref('user_friends', 'allow_frontend_add', true)) {
     return '';
 }
+
+
 /*
     if ($this->status === null) {
     $this->status = $this->ufFriendshipStatus();
@@ -144,7 +146,24 @@ if (!e107::pref('user_friends', 'allow_frontend_add', true)) {
     if (!USER || !$targetId || $targetId == USERID) {
         return '';
     }
+/*
+$user = e107::user($targetId);
+//print_a($user);
+$allow = isset($user['user_plugin_user_friends_allow'])
+    ? (int) $user['user_plugin_user_friends_allow']
+    : 1; // default do campo
+*/
+//print_a($allow);
+// $curVal = e107::user(USERID)['user_plugin_user_friends_allow_requests]'];
+//$allow = UserFriendsPrefs::getValue($targetId, 'allow_requests', 1);
 
+//print_a($allow === 0);
+
+//if($allow === 0)
+if (e107::user(USERID)['user_plugin_user_friends_allow_requests]'] === LAN_NO)
+{
+    return '';
+}
 //    var_dump ($this->status);
 
 //    return $this->status;
