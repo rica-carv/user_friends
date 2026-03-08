@@ -119,8 +119,8 @@ protected $create = false;
     protected $fieldpref = array('checkboxes','friends_id', 'from_user', 'to_user', 'created', 'status', 'options');
  	protected $preftabs        = array(LAN_GENERAL, LAN_LIST, LAN_ADVANCED);
     protected $prefs = [
-        'allow_frontend_add'      => ['title' => LANAD_USERFRIENDS_23, 'type'     => 'boolean', 'data' => 'int', 'tab'   => 0, 'writeParms' => [
-            'label' => 'yesno', 'data-depmaster' => 'true'
+        'allow_frontend_add'      => ['title' => LANAD_USERFRIENDS_23, 'type'     => 'userclass', 'data' => 'int', 'tab'   => 0, 'writeParms' => [
+           'size'=>'xlarge', 'classlist'=>'nobody,main,member,admin,classes', 'data-depmaster' => 'true'
         ]],
         'allow_users_disable'      => ['title' => LANAD_USERFRIENDS_35, 'type'     => 'boolean', 'data' => 'int', 'tab'   => 0, 'writeParms' => [
             'label' => 'yesno'
@@ -270,8 +270,8 @@ protected $create = false;
 
 e107::js('settings', [
     'adminTabDependencies' => [
-        1 => ['depends' => 'allow_frontend_add:1'],
-        2 => ['depends' => 'allow_frontend_add:1'],
+        1 => ['depends' => 'allow_frontend_add:!0,!255'],
+        2 => ['depends' => 'allow_frontend_add:!0,!255'],
     ]
 ]);
 
@@ -437,6 +437,7 @@ $this->prefs['allow_frontend_unfriend']['writeParms']['post'] =
             
     }
 */
+/*
 	public function renderHelp()
 	{
 		$caption = LAN_HELP;
@@ -452,6 +453,7 @@ $this->prefs['allow_frontend_unfriend']['writeParms']['post'] =
 
 		return array('caption' => $caption, 'text' => $text);
 	}
+    */
 }
 
 class user_friends_main_form_ui extends e_admin_form_ui
@@ -622,7 +624,7 @@ public function options($row)
 new user_friends_Adminarea();
 
 // Renderiza
-
+/*
 if ((isset($_POST['force_friends_sync'])) || (isset($_POST['etrigger_save']) && $_POST['etrigger_save'] == 'update'))
 {
     require_once(e_PLUGIN . "user_friends/includes/user_friends_admin_class.php");
@@ -631,7 +633,7 @@ if ((isset($_POST['force_friends_sync'])) || (isset($_POST['etrigger_save']) && 
     // Feedback visual para o Admin (Estilo nativo e107)
     e107::getMessage()->addSuccess("Campos Extended sincronizados com sucesso!");
 }
-
+*/
 
 require_once(e_ADMIN."auth.php");
 e107::getAdminUI()->runPage();

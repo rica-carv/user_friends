@@ -23,7 +23,8 @@ class user_friends_event
 	public function save_user_friends_prefs($data)
 	{
             $prefs = e107::getPlugPref('user_friends');
-        if(empty($prefs['allow_frontend_add']))
+//			var_dump($prefs['allow_frontend_add']);
+        if($prefs['allow_frontend_add'] == 255)
 {
       e107::lan('user_friends', 'front', true);
     e107::getMessage()->addWarning(    LAN_USERFRIEND_16    );
