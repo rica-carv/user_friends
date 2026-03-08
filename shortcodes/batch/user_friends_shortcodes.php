@@ -38,7 +38,7 @@ if (!defined('USER_FRIENDS_PLUGIN_PATH')) {
 }
 
 //include_once(e_PLUGIN . "ecore/includes/user_trait.php");
-require_once(e_PLUGIN.'user_friends/includes/user_friends_prefs.php');
+//require_once(e_PLUGIN.'user_friends/includes/user_friends_prefs.php');
 //require_once(e_BASE.'e107_plugins/user_friends/includes/user_friend_helpers.php');
 include_once(e_BASE.'e107_plugins/user_friends/includes/user_friends_trait.php');
 
