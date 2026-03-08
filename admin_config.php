@@ -238,7 +238,7 @@ protected $create = false;
     $prefObj = e107::getPlugConfig('user_friends');
     $prefs = $prefObj->getPref();
     
-    $fieldName = "plugin_user_friends_allow";
+    $fieldName = "plugin_user_friends_allow_requests";
 
     // 1. Ir buscar a realidade da BD
     $db_val = $sql->retrieve("user_extended_struct", "user_extended_struct_applicable", "user_extended_struct_name='{$fieldName}'");
@@ -437,6 +437,21 @@ $this->prefs['allow_frontend_unfriend']['writeParms']['post'] =
             
     }
 */
+	public function renderHelp()
+	{
+		$caption = LAN_HELP;
+		$text = "<div class='text-center p-4 border rounded bg-light'>
+    <hr><h4>Gestão de Campos Extended</h4>
+    <p>Se mudares as traduções ou as definições do plugin, clica abaixo para atualizar a BD.</p>
+    <form method='post' action='".e_SELF."'>
+        <button type='submit' name='force_friends_sync' class='btn btn-warning btn-lg'>
+            <i class='fa fa-refresh'></i> Forçar Sincronização de Campos
+        </button>
+    </form>
+</div>";
+
+		return array('caption' => $caption, 'text' => $text);
+	}
 }
 
 class user_friends_main_form_ui extends e_admin_form_ui
@@ -600,7 +615,7 @@ public function options($row)
     ";
 }
 */
-
+	// left-panel help menu area. (replaces e_help.php used in old plugins)
 }
 
 // Inicializa a UI
@@ -608,15 +623,27 @@ new user_friends_Adminarea();
 
 // Renderiza
 
+if ((isset($_POST['force_friends_sync'])) || (isset($_POST['etrigger_save']) && $_POST['etrigger_save'] == 'update'))
+{
+    require_once(e_PLUGIN . "user_friends/includes/user_friends_admin_class.php");
+    user_friends_admin_class::syncExtendedFields();
+    
+    // Feedback visual para o Admin (Estilo nativo e107)
+    e107::getMessage()->addSuccess("Campos Extended sincronizados com sucesso!");
+}
+
+
 require_once(e_ADMIN."auth.php");
 e107::getAdminUI()->runPage();
 
+//var_dump ($_POST['etrigger_save']);
 // 2. Agora que a BD já tem os dados novos, chamamos a função
+/*
 if (isset($_POST['etrigger_save']) && $_POST['etrigger_save'] == 'update') 
         {
             require_once(e_PLUGIN . "user_friends/includes/user_friends_admin_class.php");
         // 2. Executar a sincronização
             user_friends_admin_class::syncExtendedFields();
         }
-
+*/
 require_once(e_ADMIN."footer.php");

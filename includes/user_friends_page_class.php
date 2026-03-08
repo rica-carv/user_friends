@@ -1,6 +1,6 @@
 <?php
 if (!defined('e107_INIT')) { exit; }
-class user_friends_page
+class UserFriendsPage
 {
     protected int $ownerId;
     protected string $view;

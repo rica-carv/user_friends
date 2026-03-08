@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<e107Plugin name="User friends" lan="USER_FRIEND_FULL_NAME" version="0.05" date="2026-02-15" compatibility="2.3" installRequired="true" xhtmlcompliant="true" >
+<e107Plugin name="User friends" lan="USER_FRIEND_FULL_NAME" version="0.109" date="2026-02-15" compatibility="2.3" installRequired="true" xhtmlcompliant="true" >
 	<author name="rica-carv" email="selo.fan@gmail.com" url="https://github.com/rica-carv" />
 	<description lan="LAN_USER_FRIEND_DESC">User friends plugin</description>
 	<keywords>
@@ -38,8 +38,12 @@
 		<pref name="per_page" type="number" default="10" title="LANAD_USERFRIENDS_5" help="LAN_USERFRIEND_PREF_PER_PAGE_DESC" />
 	</pluginPrefs>
 
-<extendedFields>
-    <field name="allow" type="EUF_CHECKBOX" default="1" active="true"/>
-</extendedFields>
+	<extendedFields>
+      <field name="allow_requests" type="EUF_CHECKBOX" default="1" active="true"/>
+      <field name="auto_accept" type="EUF_CHECKBOX" default="1" active="true"/>
+      <field name="notify_email" type="EUF_CHECKBOX" default="1" active="true"/>
+      <field name="notify_pm" type="EUF_CHECKBOX" default="1" active="true"/>
+      <field name="visibility" type="EUF_DROPDOWN" default="0" active="true"/>
+	</extendedFields>
 
 </e107Plugin>

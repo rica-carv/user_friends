@@ -1,7 +1,7 @@
 <?php
 // plugin_class.php
 if (!defined('e107_INIT')) { exit; }
-
+//var_dump("USER FRIENDS CLASS ADMIN CARREGADO");
 class user_friends_admin_class 
 {
 public static function syncExtendedFields() 
@@ -9,18 +9,21 @@ public static function syncExtendedFields()
     $sql = e107::getDb();
     $prefObj = e107::getPlugConfig('user_friends');
     $prefs = $prefObj->getPref();
-    
-    $fieldName = "plugin_user_friends_allow";
 
-    // 1. Obter os dados atuais do campo na BD
-    $existing = $sql->retrieve("user_extended_struct", "user_extended_struct_id, user_extended_struct_applicable", "user_extended_struct_name='{$fieldName}'");
+    // ----------------------------
+    // 1️⃣ Determinar aplicável (lógica existente)
+    // ----------------------------
+    $existing = $sql->retrieve(
+        "user_extended_struct",
+        "user_extended_struct_id, user_extended_struct_applicable",
+        "user_extended_struct_name='plugin_user_friends_allow_requests'"
+    );
 
     $current_applicable = ($existing) ? intval($existing['user_extended_struct_applicable']) : 253;
     $new_pref_val = intval($prefs['allow_users_disable']);
 
     if ($new_pref_val == 0) 
     {
-        // Vais desativar? Faz backup do valor atual (se não for já 255)
         if($current_applicable != 255) {
             $prefObj->set('applicable_backup', $current_applicable);
             $prefObj->save();
@@ -29,37 +32,117 @@ public static function syncExtendedFields()
     } 
     else 
     {
-        // Vais ativar? Recupera o backup. Se não houver backup, usa 253.
         $backup = $prefObj->getPref('applicable_backup');
         $applicable = ($backup) ? intval($backup) : 253;
-        
-        // Se por algum motivo o backup for 255, força para 253 para não ficar invisível
         if($applicable == 255) { $applicable = 253; }
     }
 
-    // 1. Dados base que queres garantir que estão na BD (incluindo o dinâmico)
-    $field_data = array(
-        "user_extended_struct_name"       => $fieldName,
-        "user_extended_struct_text"       => LANAD_USERFRIENDS_23,
-        "user_extended_struct_type"       => 2,
-        "user_extended_struct_parms"      => "plugin_user_friends^,^^,^^,^0^,^^,^".LANAD_USERFRIENDS_36,
-        "user_extended_struct_values"     => LAN_YES.",".LAN_NO,
-        "user_extended_struct_default"    => "1",
-        "user_extended_struct_read"       => 253,
-        "user_extended_struct_write"      => 253,
-        "user_extended_struct_required"   => intval($prefs['allow_users_disable']),
-        "user_extended_struct_signup"     => 0,
-        "user_extended_struct_applicable" => $applicable,
-        "user_extended_struct_order"      => 0,
-        "user_extended_struct_parent"     => 0,
+    e107::lan('user_friends', 'front', true);
+
+    // ----------------------------
+    // 2️⃣ Categoria do plugin
+    // ----------------------------
+    $catName = LAN_USERFRIEND_26;
+    $catID = $sql->retrieve(
+        "user_extended_struct", 
+        "user_extended_struct_id", 
+        "user_extended_struct_name='{$catName}'"
     );
 
-    if($existing) {
-        $field_data['WHERE'] = "user_extended_struct_id = ".intval($existing['user_extended_struct_id']);
-        $sql->update("user_extended_struct", $field_data, false);
-    } else {
-        $sql->insert("user_extended_struct", $field_data);
+    if (!$catID) {
+        $catID = $sql->insert("user_extended_struct", [
+            "user_extended_struct_name" => $catName,
+            "user_extended_struct_type" => 0
+        ]);
     }
+
+    // ----------------------------
+    // 3️⃣ Campos do plugin
+    // ----------------------------
+    $fields = [
+        'allow_requests' => [
+            'text'       => LAN_USERFRIEND_20,
+            'type'       => 2,
+            'values'     => LAN_YES.','.LAN_NO,
+            'default'    => "1",
+            'required'   => intval($prefs['allow_users_disable']),
+            'applicable' => $applicable,
+            'order'      => 1
+        ],
+        'auto_accept' => [
+            'text'    => LAN_USERFRIEND_21,
+            'type'    => 2,
+            'values'  => LAN_YES.','.LAN_NO,
+            'default' => "1",
+            'order'   => 2
+        ],
+        'notify_email' => [
+            'text'    => LAN_USERFRIEND_22,
+            'type'    => 2,
+            'values'  => LAN_YES.','.LAN_NO,
+            'default' => "1",
+            'order'   => 3
+        ],
+        'notify_pm' => [
+            'text'    => LAN_USERFRIEND_23,
+            'type'    => 2,
+            'values'  => LAN_YES.','.LAN_NO,
+            'default' => "1",
+            'order'   => 4
+        ],
+        'visibility' => [
+            'text'    => LAN_USERFRIEND_24,
+            'type'    => 3,
+            'values'  => LAN_USERFRIEND_25.','.LAN_USERFRIEND_26.','.LAN_USERFRIEND_27,
+            'default' => LAN_USERFRIEND_25,
+            'order'   => 5
+        ]
+    ];
+
+    // ----------------------------
+    // 4️⃣ Atualizar ou criar campos
+    // ----------------------------
+    foreach ($fields as $shortName => $data) 
+    {
+        $fieldName = "plugin_user_friends_" . $shortName;
+
+        // Verificar se o campo já existe pelo name
+        $existingField = $sql->retrieve(
+            "user_extended_struct", 
+            "user_extended_struct_id", 
+            "user_extended_struct_name='{$fieldName}'"
+        );
+
+        $fieldData = [
+            "user_extended_struct_name"       => $fieldName,
+            "user_extended_struct_text"       => $data['text'],
+            "user_extended_struct_type"       => $data['type'],
+            "user_extended_struct_parms"      => "plugin_user_friends^,^^,^^,^0^,^^,^{$data['text']}",
+            "user_extended_struct_values"     => $data['values'] ?? '',
+            "user_extended_struct_default"    => $data['default'] ?? 0,
+            "user_extended_struct_read"       => 253,
+            "user_extended_struct_write"      => 253,
+            "user_extended_struct_required"   => $data['required'] ?? 0,
+            "user_extended_struct_signup"     => 0,
+            "user_extended_struct_applicable" => $data['applicable'] ?? 253,
+            "user_extended_struct_order"      => $data['order'],
+            "user_extended_struct_parent"     => $catID
+        ];
+
+        if ($existingField) {
+            // Atualizar campo existente
+            $fieldData['WHERE'] = "user_extended_struct_id=".intval($existingField);
+            $sql->update("user_extended_struct", $fieldData);
+        } else {
+            // Inserir novo campo
+            $sql->insert("user_extended_struct", $fieldData);
+        }
+    }
+
+    // ----------------------------
+    // 5️⃣ Limpar cache do sistema
+    // ----------------------------
+    e107::getCache()->clear('system');
 }
 
 }
