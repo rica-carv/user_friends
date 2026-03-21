@@ -1,7 +1,9 @@
 <?php
 if (!defined('e107_INIT')) { exit; }
+include_once(e_BASE.'e107_plugins/user_friends/includes/user_friends_trait.php');
 class UserFriendsPage
 {
+	use UserFriendsTrait;
     protected int $ownerId;
     protected string $view;
     protected string $layout;
@@ -63,10 +65,44 @@ class UserFriendsPage
         $this->total = $this->counts[$this->view] ?? 0;
     }
 
+    protected function getFriendsVisibility($userId)
+{
+    $user = e107::user($userId);
+    $visibility = trim($user['user_plugin_user_friends_visibility'] ?? '');
+    var_dump($visibility);
+
+    if ($visibility === LAN_USERFRIEND_25) return 'public';
+    if ($visibility === LAN_USERFRIEND_26) return 'friends';
+    if ($visibility === LAN_USERFRIEND_27) return 'private';
+/*
+    // fallback leve
+    $v = mb_strtolower($visibility);
+
+    if (strpos($v, 'pub') !== false) return 'public';
+    if (strpos($v, 'friend') !== false || strpos($v, 'amig') !== false) return 'friends';
+    if (strpos($v, 'priv') !== false) return 'private';
+*/
+    return 'public';
+}
     public function render(bool $textonly = false)
     {
             $tp = e107::getParser();
         $sc = e107::getScBatch('user_friends', 'user_friends');
+
+
+        $visibility = $this->getFriendsVisibility($this->ownerId);
+        $isFriend = $this->ufFriendshipStatus();
+        if (((int) e107::pref('user_friends', 'allow_private_friends_list') === 1) && (USERID !== $this->ownerId) && ($visibility === 'private' || ($visibility === 'friends' && !$isFriend))) {
+        $sc->setVars([
+            'view'      => 'private',
+            'user_id'   => $this->ownerId,
+        ]);
+//        var_dump($sc->getVars());
+            return $tp->parseTemplate('{USERFRIEND_MESSAGE}', true, $sc);
+        }
+
+///            $tp = e107::getParser();
+///        $sc = e107::getScBatch('user_friends', 'user_friends');
         $sc->setVars([
             'view'      => $this->view,
             'layout'    => $this->layout,

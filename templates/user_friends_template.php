@@ -205,3 +205,36 @@ $USER_FRIENDS_TEMPLATE['edit_item'] = '
     </td>
 </tr>
 ';
+
+/* --------------------
+ * Menu
+ * -------------------- */
+$USER_FRIENDS_TEMPLATE['menu'] = '
+    <ul class="dropdown-menu dropdown-menu-end">
+        <li>
+           <a class="dropdown-item icon-link" href="{USERFRIEND_URL=friends}">
+            <i class="fa-solid fa-user-group"></i>{LAN=LAN_USERFRIEND_4}
+                <span class="badge">
+        {USERFRIEND_COUNT=friends}{USERFRIEND_NEW_COUNT=type:friends_new}
+    </span>
+        </a>
+    {USERFRIEND_NEW_ICON=type:friends_new}
+
+        <a class="dropdown-item icon-link" href="{USERFRIEND_URL=sent}">
+            <i class="fa-solid fa-user-clock"></i>{LAN=LAN_USERFRIEND_5}
+                        <span class="badge">
+        {USERFRIEND_COUNT=sent}
+    </span>
+        </a>
+
+        <a class="dropdown-item icon-link" href="{USERFRIEND_URL=received}">
+            <i class="fa-solid fa-user-plus"></i>{LAN=LAN_USERFRIEND_6}
+                           <span class="badge">
+        {USERFRIEND_COUNT=received}{USERFRIEND_NEW_COUNT=type:received_new}
+    </span>
+        </a>
+    {USERFRIEND_NEW_ICON=type:received_new}
+
+        </li>
+    </ul>
+';

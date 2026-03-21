@@ -716,8 +716,9 @@ function sc_userfriend_pagination()
                 'default' => LAN_USERFRIEND_1,
                 'friends' => LAN_USERFRIEND_34,
                 'sent' => LAN_USERFRIEND_35,        
-                'received' => LAN_USERFRIEND_36
-            );            
+                'received' => LAN_USERFRIEND_36,
+                'private' => LAN_USERFRIEND_17,
+            );
 /*
 var_dump($this->var['user_id']);
 var_dump(USERID);
@@ -732,7 +733,7 @@ var_dump($this->var['user_id']==USERID?$this->var['view']:"default");
                 $received = $this->var['counts']['received'];
                 $text.="<br>".($received>0?str_replace("[x]", $received, LAN_USERFRIEND_38):$mtext['received']);
             }
-            $msg->addInfo($mtext[$this->var['user_id']==USERID?$this->var['view']:"default"].$text);
+            $msg->addInfo($mtext[$this->var['user_id']==USERID?$this->var['view']:($this->var['view']=='private'?"private":"default")].$text);
 //            return e107::getMessage()->render();
             }
 

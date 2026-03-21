@@ -56,7 +56,7 @@ trait UserFriendsTrait
      *  2    → amigos
      */
 //    protected function ufFriendshipStatus(): ?int
-    protected function ufFriendshipStatus()
+    protected function ufFriendshipStatus(): array
     {
         if (!USERID) {
             return [];

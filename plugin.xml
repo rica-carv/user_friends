@@ -20,7 +20,7 @@
 	</dependencies>
 
 	<pluginPrefs>
-		<pref name="allow_frontend_add" type="boolean" default="1" title="LANAD_USERFRIENDS_23" help="LAN_USERFRIEND_PREF_ALLOW_ADD_DESC" />
+		<pref name="allow_frontend_add" type="userclass" default="253" title="LANAD_USERFRIENDS_23" help="LAN_USERFRIEND_PREF_ALLOW_ADD_DESC" />
 		<pref name="allow_users_disable" type="boolean" default="0" title="LANAD_USERFRIENDS_35" help="LAN_USERFRIEND_PREF_ALLOW_ADD_DESC" />
 		<pref name="show_alert" type="boolean" default="1" title="LANAD_USERFRIENDS_10" help="LAN_USERFRIEND_PREF_SHOW_ALERT_DESC" />
 		<pref name="show_frontend_messages" type="boolean" default="1" title="LANAD_USERFRIENDS_16" help="LAN_USERFRIEND_PREF_SHOW_MESSAGES_DESC" />
@@ -34,16 +34,21 @@
 		<pref name="autoreset" type="boolean" default="0" title="LANAD_USERFRIENDS_27" help="LAN_USERFRIEND_PREF_AUTO_RESET_DESC" />
 		<pref name="reset_delay" type="number" default="5000" title="LANAD_USERFRIENDS_15" help="LAN_USERFRIEND_PREF_RESET_DELAY_DESC" />
 		<pref name="reset_counter" type="boolean" default="1" title="LANAD_USERFRIENDS_14" help="LAN_USERFRIEND_PREF_RESET_COUNTER_DESC" />
-		<pref name="log_actions" type="boolean" default="0" title="LANAD_USERFRIENDS_28" help="LAN_USERFRIEND_PREF_LOG_ACTIONS_DESC" />
+		<pref name="multi_buttons" type="boolean" default="0" title="LANAD_USERFRIENDS_28" help="LAN_USERFRIEND_PREF_LOG_ACTIONS_DESC" />
+		<pref name="log_actions" type="boolean" default="0" title="LANAD_USERFRIENDS_29" help="LAN_USERFRIEND_PREF_LOG_ACTIONS_DESC" />
 		<pref name="per_page" type="number" default="10" title="LANAD_USERFRIENDS_5" help="LAN_USERFRIEND_PREF_PER_PAGE_DESC" />
+
+		<pref name="global_notify_mode" type="boolean" default="0" />
+		<pref name="global_notify_mode_override" type="boolean" default="0" />
+		<pref name="allow_private_friends_list" type="boolean" default="0" />
+
 	</pluginPrefs>
 
 	<extendedFields>
-      <field name="allow_requests" type="EUF_CHECKBOX" default="1" active="true"/>
-      <field name="auto_accept" type="EUF_CHECKBOX" default="1" active="true"/>
-      <field name="notify_email" type="EUF_CHECKBOX" default="1" active="true"/>
-      <field name="notify_pm" type="EUF_CHECKBOX" default="1" active="true"/>
-      <field name="visibility" type="EUF_DROPDOWN" default="0" active="true"/>
+      <field name="allow_requests" type="EUF_RADIO" default="1" active="true"/>
+      <field name="auto_accept" type="EUF_RADIO" default="1" active="true"/>
+      <field name="notify_mode" type="EUF_CHECKBOX" default="1" active="true"/>
+      <field name="visibility" type="EUF_RADIO" default="0" active="true"/>
 	</extendedFields>
 
 </e107Plugin>

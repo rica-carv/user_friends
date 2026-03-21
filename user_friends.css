@@ -59,3 +59,19 @@
     50%  { filter: brightness(1.4) saturate(1.2); }
     100% { filter: brightness(1); }
 }
+
+label small {
+    color: #6c757d;
+    font-style: italic;
+    position: relative;
+    padding-left: 18px;
+}
+
+label small::before {
+    content: "ⓘ";
+    position: absolute;
+    left: 0;
+    font-size: 14px;
+    color: #17a2b8;
+    font-style: initial;
+}

@@ -44,7 +44,7 @@ include_once(e_BASE.'e107_plugins/user_friends/includes/user_friends_trait.php')
     class user_friends_shortcodes extends e_shortcode
 {
 ///////////	use Euser_global_info;
-	use user_friends_trait;
+	use UserFriendsTrait;
 //	protected $tp;
 	protected $sql;
 //    protected $template;
@@ -137,7 +137,7 @@ function sc_userfriend_options__($parm = [])
 
 
 
-function sc_USERFRIEND_TAB_TITLE()
+function sc_userfriend_tab_title()
 {
     return LAN_USERFRIENDS_FULLNAME; // ex: "Amigos"
 }
@@ -171,7 +171,7 @@ public function sc_userfriend_list()
 {
     require_once(e_PLUGIN.'user_friends/includes/user_friends_page_class.php');
 
-    $page = new user_friends_page([
+    $page = new UserFriendsPage([
         'id'     => $this->ufTargetId()
     ]);
 
@@ -184,7 +184,7 @@ public function sc_userfriend_list()
 //        var_dump ($this->ufTargetId());
         require_once(e_PLUGIN.'user_friends/includes/user_friends_page_class.php');
 
-    $page = new user_friends_page([
+    $page = new UserFriendsPage([
         'id'     => $this->ufTargetId()
     ]);
         return $page->getCount('friends');
@@ -198,7 +198,7 @@ public function sc_userfriend_list()
 //        require_once(e_PLUGIN.'user_friends/includes/user_friends_page_class.php');
 
 /*
-    $page = new user_friends_page([
+    $page = new UserFriendsPage([
         'id'     => $this->ufTargetId()
     ]);
 */
@@ -206,7 +206,7 @@ public function sc_userfriend_list()
         $id = $this->ufTargetId();
 
                 require_once(e_PLUGIN.'user_friends/includes/user_friends_page_class.php');
-    $page = new user_friends_page([
+    $page = new UserFriendsPage([
         'id'     => $id
     ]);
 //        var_dump($page->getCount('friends'));
@@ -289,7 +289,7 @@ $urlReceived   = e_SELF . '?view=received&layout=' . $urllayout;
 //    var_dump ($this->ufFriendshipStatus());
     $uf_sc->setVars($this->ufFriendshipStatus()); // Isto tem de ser addvars senão limpa as vars todas.....
     require_once(e_PLUGIN.'user_friends/includes/user_friends_page_class.php');
-    $page = new user_friends_page();
+    $page = new UserFriendsPage();
 //    $counts['friends'] = $page->getCount();
     $uf_sc->addVars(array( 'counts' => $page->getCount()));
 

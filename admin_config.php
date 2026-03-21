@@ -117,7 +117,7 @@ protected $create = false;
     ];
 
     protected $fieldpref = array('checkboxes','friends_id', 'from_user', 'to_user', 'created', 'status', 'options');
- 	protected $preftabs        = array(LAN_GENERAL, LAN_LIST, LAN_ADVANCED);
+ 	protected $preftabs        = array(LAN_GENERAL, LANAD_USERFRIENDS_1, LANAD_USERFRIENDS_9, LAN_LIST, LAN_ADVANCED);
     protected $prefs = [
         'allow_frontend_add'      => ['title' => LANAD_USERFRIENDS_23, 'type'     => 'userclass', 'data' => 'int', 'tab'   => 0, 'writeParms' => [
            'size'=>'xlarge', 'classlist'=>'nobody,main,member,admin,classes', 'data-depmaster' => 'true'
@@ -148,8 +148,8 @@ protected $create = false;
         'show_frontend_reject'      => ['title' => LANAD_USERFRIENDS_12, 'type'     => 'boolean', 'data' => 'int', 'tab'   => 0, 'writeParms' => [
             'label' => 'yesno', 'data-depends' => 'allow_frontend_decline:1'
         ]],
-			'_divider1' => array('title' => "<div class='form-divider' style='font-weight:bold; margin-top:8px; padding-top:6px; text-transform:uppercase;'>". LANAD_USERFRIENDS_9 ."</div>", 'type' => 'method'),
-        'allow_frontend_unfriend'      => ['title' => LANAD_USERFRIENDS_11, 'type'     => 'boolean', 'data' => 'int', 'tab'   => 0, 'writeParms' => [
+//			'_divider1' => array('title' => "<div class='form-divider' style='font-weight:bold; margin-top:8px; padding-top:6px; text-transform:uppercase;'>". LANAD_USERFRIENDS_9 ."</div>", 'type' => 'method'),
+        'allow_frontend_unfriend'      => ['title' => LANAD_USERFRIENDS_11, 'type'     => 'boolean', 'data' => 'int', 'tab'   => 2, 'writeParms' => [
             'label' => 'yesno'
         ]],
 
@@ -157,7 +157,7 @@ protected $create = false;
     'title' => LANAD_USERFRIENDS_30,
     'type'  => 'boolean',
     'data'  => 'int',
-    'tab'   => 0,
+    'tab'   => 2,
     'help'  => LANAD_USERFRIENDS_31,
             'writeParms' => ['label' => 'yesno', 'data-depends' => 'allow_frontend_unfriend:1']
 ],
@@ -166,11 +166,11 @@ protected $create = false;
     'title' => LANAD_USERFRIENDS_32,
     'type'  => 'boolean',
     'data'  => 'int',
-    'tab'   => 0,
+    'tab'   => 2,
     'help'  => LANAD_USERFRIENDS_33,
             'writeParms' => ['label' => 'yesno', 'data-depends' => 'allow_frontend_unfriend:1']
 ],
-			'_divider2' => array('title' => "<div class='form-divider' style='font-weight:bold; margin-top:8px; padding-top:6px; text-transform:uppercase;'>". LANAD_USERFRIENDS_34 ."</div>", 'type' => 'method'),
+			'_divider1' => array('title' => "<div class='form-divider' style='font-weight:bold; margin-top:8px; padding-top:6px; text-transform:uppercase;'>". LANAD_USERFRIENDS_34 ."</div>", 'type' => 'method'),
         // Auto reset
         'autoreset' => [
             'title' => LANAD_USERFRIENDS_27,
@@ -212,24 +212,53 @@ protected $create = false;
 		'news_subheader'          => ['title' => NWSLAN_120, 'type'     => 'bbarea', 'tab'      => 'subnews']
 */
         // Backend
-        'log_actions' => [
+                'global_notify_mode' => [
+            'title' => LANAD_USERFRIENDS_4,
+            'type'  => 'checkboxes',
+            'data'  => 'int',
+            'tab'   => 1,
+            'writeParms' => ['optArray' => ['yes' => 'Yes', 'no' => 'No']]
+        ],
+                'global_notify_mode_override' => [
+            'title' => LANAD_USERFRIENDS_29,
+            'type'  => 'boolean',
+            'data'  => 'int',
+            'tab'   => 1,
+            'writeParms' => ['label' => 'yesno']
+        ],
+        'multi_buttons' => [
             'title' => LANAD_USERFRIENDS_28,
             'type'  => 'boolean',
             'data'  => 'int',
-            'tab'   => 2,
+            'tab'   => 4,
+            'writeParms' => ['label' => 'yesno']
+        ],
+                'log_actions' => [
+            'title' => LANAD_USERFRIENDS_29,
+            'type'  => 'boolean',
+            'data'  => 'int',
+            'tab'   => 4,
             'writeParms' => ['label' => 'yesno']
         ],
         'per_page' => [
     'title' => LANAD_USERFRIENDS_5,
     'type'  => 'number',
     'data'  => 'int',
-    'tab'   => 1,
+    'tab'   => 3,
     'writeParms' => [
         'min'  => 1,
         'max'  => 100,
-        'step' => 1
-    ]
-]
+        'step' => 1]
+    ],
+                    'allow_private_friends_list' => [
+            'title' => LANAD_USERFRIENDS_6,
+            'type'  => 'boolean',
+            'data'  => 'int',
+            'tab'   => 3,
+               'help'  => LANAD_USERFRIENDS_7,
+
+            'writeParms' => ['label' => 'yesno']
+        ]
 
     ];
 	function init()
@@ -272,6 +301,8 @@ e107::js('settings', [
     'adminTabDependencies' => [
         1 => ['depends' => 'allow_frontend_add:!0,!255'],
         2 => ['depends' => 'allow_frontend_add:!0,!255'],
+        3 => ['depends' => 'allow_frontend_add:!0,!255'],
+        4 => ['depends' => 'allow_frontend_add:!0,!255'],
     ]
 ]);
 
@@ -437,7 +468,7 @@ $this->prefs['allow_frontend_unfriend']['writeParms']['post'] =
             
     }
 */
-/*
+
 	public function renderHelp()
 	{
 		$caption = LAN_HELP;
@@ -453,7 +484,7 @@ $this->prefs['allow_frontend_unfriend']['writeParms']['post'] =
 
 		return array('caption' => $caption, 'text' => $text);
 	}
-    */
+    
 }
 
 class user_friends_main_form_ui extends e_admin_form_ui
@@ -624,7 +655,7 @@ public function options($row)
 new user_friends_Adminarea();
 
 // Renderiza
-/*
+
 if ((isset($_POST['force_friends_sync'])) || (isset($_POST['etrigger_save']) && $_POST['etrigger_save'] == 'update'))
 {
     require_once(e_PLUGIN . "user_friends/includes/user_friends_admin_class.php");
@@ -633,7 +664,7 @@ if ((isset($_POST['force_friends_sync'])) || (isset($_POST['etrigger_save']) && 
     // Feedback visual para o Admin (Estilo nativo e107)
     e107::getMessage()->addSuccess("Campos Extended sincronizados com sucesso!");
 }
-*/
+
 
 require_once(e_ADMIN."auth.php");
 e107::getAdminUI()->runPage();
