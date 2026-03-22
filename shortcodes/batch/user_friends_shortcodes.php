@@ -609,7 +609,8 @@ function sc_userfriend_notok($parm = '')
 
     function sc_userfriend_url($parm)
     {
-        return e_SELF . '?view=' . $parm . '&layout=' . ($this->var['layout'] ?? 'list');
+//        return e_SELF . '?view=' . $parm . '&layout=' . ($this->var['layout'] ?? 'list');
+        return e107::url('user_friends', 'index').'?view=' . $parm . '&layout=' . ($this->var['layout'] ?? 'list');
     }
 
 function sc_userfriend_pagination()
@@ -654,10 +655,11 @@ function sc_userfriend_pagination()
             return LAN_NO_RESULTS_FOUND;
         }
         */
-//echo "<pre>";
-//var_dump ($this->var);
-//echo "</pre>";
-
+/*
+echo "<pre>";
+var_dump ($this->var);
+echo "</pre>";
+*/
         if (empty($this->var['rows'])) {
 //             $this->sc_message=e107::getMessage()->addInfo(LAN_NO_RESULTS_FOUND);
              return '';
@@ -709,9 +711,12 @@ function sc_userfriend_pagination()
             return LAN_NO_RESULTS_FOUND;
         }
         */
-//        var_dump(strpos(e_PAGE, "user_friends"));
-
+/*
+        var_dump($this->var['total']);
+        echo "<hr>";
+*/
         if (empty($this->var['rows'])) {
+//        if (($this->var['total'] == 0)) {
     		$mtext = array(
                 'default' => LAN_USERFRIEND_1,
                 'friends' => LAN_USERFRIEND_34,

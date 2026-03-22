@@ -202,7 +202,8 @@ public function sc_userfriend_list()
         'id'     => $this->ufTargetId()
     ]);
 */
-        $text = e_PLUGIN.'/user_friends/user_friends.php';
+//        $text = e_PLUGIN.'/user_friends/user_friends.php';
+        $text = e107::url('user_friends', 'index');
         $id = $this->ufTargetId();
 
                 require_once(e_PLUGIN.'user_friends/includes/user_friends_page_class.php');

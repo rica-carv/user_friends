@@ -69,7 +69,7 @@ class UserFriendsPage
 {
     $user = e107::user($userId);
     $visibility = trim($user['user_plugin_user_friends_visibility'] ?? '');
-    var_dump($visibility);
+//    var_dump($visibility);
 
     if ($visibility === LAN_USERFRIEND_25) return 'public';
     if ($visibility === LAN_USERFRIEND_26) return 'friends';
@@ -122,7 +122,7 @@ class UserFriendsPage
         if ($textonly) {
             return $tp->parseTemplate('{USERFRIEND_MESSAGE}{USERFRIEND_ITEMS}{USERFRIEND_MAIN}', true, $sc);
         }
-        $text =$tp->parseTemplate($template['page'], true, $sc);
+        $text = $tp->parseTemplate($template['page'], true, $sc);
         $sc->wrapper('user_friends/caption');
         e107::getRender()->tablerender(
             ($template['caption']?$tp->parseTemplate($template['caption'], true, $sc):(!empty($_GET['id']) ? str_replace('[x]', e107::user($_GET['id'])['user_name'], LAN_USERFRIEND_2) : LAN_USERFRIEND_4)),

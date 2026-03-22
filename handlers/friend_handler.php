@@ -243,7 +243,8 @@ if (e107::pref('user_friends', 'log_actions'))
         'friends_id'=> $friendsId ?? null,
         'user'       => USERID,
     ]);
-}/* -------------------------
+}
+/* -------------------------
    RESPOSTA FINAL
 --------------------------*/
 $response['status'] = 'ok';
