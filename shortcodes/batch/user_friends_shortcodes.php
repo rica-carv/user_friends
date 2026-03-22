@@ -629,7 +629,7 @@ function sc_userfriend_pagination()
 			'amount'      => (int) ($this->var['perPage'] ?? e107::pref('user_friends', 'per_page', 10)),
 			'current'     => (int) (varset($_GET['from'],0)),
 //			'url'         => e107::getUrl()->create($this->route, $this->newsUrlparms),
-			'url'         => 'user_friends.php?view='.$this->var['view'].'&layout='.$this->var['layout']."&from=--FROM--",
+			'url'         => e107::url('user_friends', 'index').'?view='.$this->var['view'].'&layout='.$this->var['layout']."&from=--FROM--",
 		];
 /*        
         $parms = 
