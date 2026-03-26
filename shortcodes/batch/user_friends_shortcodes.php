@@ -113,10 +113,11 @@ private function ufJS()
 
 function sc_userfriend_add($parm = '')
 {
+/*
 if (!e107::pref('user_friends', 'allow_frontend_add', true)) {
     return '';
 }
-
+*/
 
 /*
     if ($this->status === null) {
@@ -130,11 +131,18 @@ if (!e107::pref('user_friends', 'allow_frontend_add', true)) {
 //    var_dump($this->var);
 //    var_dump ($this->var && $this->var['status']);
 //var_dump($this->var);
-
+/*
     if ($this->var['status']) {
         return '';
 //        return $this->var['status'];
     }
+*/
+if (
+    e107::pref('user_friends', 'allow_frontend_add')==255 ||
+    !empty($this->var['status'])
+) {
+    return '';
+}
     
 //$prefs = e107::getPlugPref('user_friends');
 /*
@@ -266,7 +274,7 @@ function sc_userfriend_accepted($parm = '')
 function sc_userfriend_remove($parm = '')
 {
 $status = (int) ($this->var['status'] ?? 0);
-
+/*
 if ($status === 1 && !e107::pref('user_friends', 'allow_frontend_unsend')) {
     return '';
 }
@@ -278,6 +286,7 @@ if ( $this->var['view'] && $this->var['view'] === 'received')
     {
         return '';
     }
+    */
 /*
 if ($this->status === null) {
     $this->status = $this->ufFriendshipStatus();
@@ -295,12 +304,13 @@ if ($this->status === null) {
 //var_dump ($this->var['row'] );
 //var_dump ($this->var['status'] );
 
-
+/*
 
 // só estados válidos
 if (!in_array($status, [1, 2], true)) {
     return '';
 }
+*/
     // Pref controla tudo
     //var_dump((!e107::pref('user_friends', 'allow_frontend_unfriend')) || (!e107::pref('user_friends', 'allow_frontend_unsend')));
     //var_dump(!e107::pref('user_friends', 'allow_frontend_unfriend'));
@@ -346,15 +356,36 @@ if (!in_array($status, [1, 2], true)) {
             return '';
         }
         */
+        /*
         if ((int) $this->var['from_user'] <> USERID) {
             return '';
         }
+        */
     // Só mostra se forem amigos
 /*
     if (uf_friendship_exists(USERID, $targetId) !== 2) {
         return '';
     }
 */
+//var_dump(e107::pref('user_friends', 'allow_frontend_unsend'));
+//var_dump(e107::pref('user_friends', 'allow_frontend_unfriend'));
+
+if (
+    // só estados válidos
+    !in_array($status, [1, 2], true) ||
+
+    // prefs por estado
+    ($status === 1 && !e107::pref('user_friends', 'allow_frontend_unsend')) ||
+    ($status === 2 && !e107::pref('user_friends', 'allow_frontend_unfriend')) ||
+
+    // não mostrar recebidos
+    ( $this->var['view'] && $this->var['view'] === 'received') ||
+
+    // só o user que enviou
+    ((int) $this->var['from_user'] !== USERID)
+) {
+    return '';
+}
 
     if ($this->var['status'] == 1) {
         $text = LAN_USERFRIEND_7;
